@@ -1,5 +1,6 @@
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use futures::future;
+mod views;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -32,6 +33,14 @@ async fn main() -> std::io::Result<()> {
     .workers(3) // If not set -> using the amount of threads
     .run();
 
-    future::try_join(server1, server2).await?;
+    let server3 = HttpServer::new(move || {
+        let app = App::new().configure(views::views_factory);
+        return app
+    })
+        .bind("127.0.0.1:8000")?
+        .workers(3) // If not set -> using the amount of threads
+        .run();
+
+    future::try_join3(server1, server2, server3).await?;
     Ok(())
 }
