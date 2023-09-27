@@ -1,13 +1,19 @@
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use futures::future;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hellop {}!", name)
+    format!("Hello {}!", name)
+}
+
+async fn two() -> impl Responder {
+    "Two reached - not!\n"
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+    // Running 2 Servers in parallel
+    let server1 = HttpServer::new(move || {
         println!("worker here");
         App::new()
             .route("/", web::get().to(greet))
@@ -16,6 +22,16 @@ async fn main() -> std::io::Result<()> {
     })
     .bind("127.0.0.1:8080")?
     .workers(3) // If not set -> using the amount of threads
-    .run()
-    .await
+    .run();
+
+    let server2 = HttpServer::new(move || {
+        println!("worker here");
+        App::new().service(web::resource("/one").route(web::get().to(|| two())))
+    })
+    .bind("127.0.0.1:8081")?
+    .workers(3) // If not set -> using the amount of threads
+    .run();
+
+    future::try_join(server1, server2).await?;
+    Ok(())
 }
