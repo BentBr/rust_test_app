@@ -35,11 +35,11 @@ async fn main() -> std::io::Result<()> {
 
     let server3 = HttpServer::new(move || {
         let app = App::new().configure(views::views_factory);
-        return app
+        return app;
     })
-        .bind("127.0.0.1:9095")?
-        .workers(3) // If not set -> using the amount of threads
-        .run();
+    .bind("127.0.0.1:9095")?
+    .workers(3) // If not set -> using the amount of threads
+    .run();
 
     future::try_join3(server1, server2, server3).await?;
     Ok(())
