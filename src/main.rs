@@ -21,7 +21,7 @@ async fn main() -> std::io::Result<()> {
             .route("/{name}", web::get().to(greet))
             .route("/say/hello", web::get().to(|| async { "Hello Again!" }))
     })
-    .bind("127.0.0.1:8080")?
+    .bind("127.0.0.1:9093")?
     .workers(3) // If not set -> using the amount of threads
     .run();
 
@@ -29,7 +29,7 @@ async fn main() -> std::io::Result<()> {
         println!("worker here");
         App::new().service(web::resource("/one").route(web::get().to(|| two())))
     })
-    .bind("127.0.0.1:8081")?
+    .bind("127.0.0.1:9094")?
     .workers(3) // If not set -> using the amount of threads
     .run();
 
@@ -37,7 +37,7 @@ async fn main() -> std::io::Result<()> {
         let app = App::new().configure(views::views_factory);
         return app
     })
-        .bind("127.0.0.1:8000")?
+        .bind("127.0.0.1:9095")?
         .workers(3) // If not set -> using the amount of threads
         .run();
 
