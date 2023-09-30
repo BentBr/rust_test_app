@@ -6,6 +6,7 @@ pub mod json_serialization;
 
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use futures::future;
+use sentry;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -18,7 +19,12 @@ async fn two() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Running 2 Servers in parallel
+    let _guard = sentry::init(("", sentry::ClientOptions {
+        release: sentry::release_name!(),
+        ..Default::default()
+    }));
+
+    // Running 3 Servers in parallel
     let server1 = HttpServer::new(move || {
         println!("worker here");
         App::new()
