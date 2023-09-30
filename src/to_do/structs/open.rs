@@ -1,3 +1,4 @@
+use std::time::SystemTime;
 use super::super::enums::TaskStatus;
 use super::super::traits::create::Create;
 use super::super::traits::edit::Edit;
@@ -13,6 +14,7 @@ impl Open {
         let base = Base {
             title: input_title.to_string(),
             status: TaskStatus::OPEN,
+            creation_date: SystemTime::now(),
         };
 
         return Open { super_struct: base };

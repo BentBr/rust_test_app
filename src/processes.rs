@@ -15,7 +15,7 @@ fn process_open(item: Open, command: String, state: &Map<String, Value>) {
         "get" => item.get(&item.super_struct.title, &state),
         "create" => item.create(
             &item.super_struct.title,
-            &item.super_struct.status.to_string(),
+            &item.super_struct.status.stringify(),
             &mut state,
         ),
         "edit" => item.set_to_done(&item.super_struct.title, &mut state),

@@ -2,6 +2,7 @@ mod processes;
 mod state;
 mod to_do;
 mod views;
+pub mod json_serialization;
 
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use futures::future;

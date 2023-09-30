@@ -1,14 +1,13 @@
 use std::fmt;
+use serde::ser::{Serialize, Serializer};
 
 pub enum TaskStatus {
     DONE,
     OPEN,
 }
 
-// Basically the same as the implementation of Display for Taskstatus, but we have to invoke it:
-// TaskStatus::DONE._to_string() vs TaskStatus::DONE
 impl TaskStatus {
-    pub fn _stringify(&self) -> String {
+    pub fn stringify(&self) -> String {
         match &self {
             &Self::DONE => "DONE".to_string(),
             &Self::OPEN => "OPEN".to_string(),
@@ -34,5 +33,11 @@ impl fmt::Display for TaskStatus {
                 write!(f, "OPEN")
             }
         }
+    }
+}
+
+impl Serialize for TaskStatus {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+        Ok(serializer.serialize_str(&self.stringify().as_str())?)
     }
 }

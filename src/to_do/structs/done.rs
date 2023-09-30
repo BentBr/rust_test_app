@@ -1,3 +1,4 @@
+use std::time::SystemTime;
 use super::super::enums::TaskStatus;
 use super::super::traits::delete::Delete;
 use super::super::traits::edit::Edit;
@@ -13,6 +14,7 @@ impl Done {
         let base = Base {
             title: input_title.to_string(),
             status: TaskStatus::DONE,
+            creation_date: SystemTime::now(),
         };
 
         return Done { super_struct: base };
