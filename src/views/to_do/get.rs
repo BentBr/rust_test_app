@@ -12,8 +12,9 @@ pub async fn get() -> impl Responder {
     let mut array_buffer = Vec::new();
 
     for (key, value) in state {
-        let status: TaskStatus = TaskStatus::from_string(value.as_str().unwrap().to_string());
-        let item: ItemTypes = to_do_factory(&key, status);
+        let status: TaskStatus =
+            TaskStatus::from_string(value["status"].as_str().unwrap().to_string());
+        let item: ItemTypes = to_do_factory(&key, status, value["creation_date"].as_str().unwrap());
 
         array_buffer.push(item);
     }

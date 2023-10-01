@@ -5,19 +5,23 @@ use super::to_do::traits::delete::Delete;
 use super::to_do::traits::edit::Edit;
 use super::to_do::traits::get::Get;
 use super::to_do::ItemTypes;
+use chrono::prelude::*;
 use serde_json::value::Value;
 use serde_json::Map;
+use std::collections::HashMap;
 
 fn process_open(item: Open, command: String, state: &Map<String, Value>) {
     let mut state = state.clone();
 
     match command.as_str() {
         "get" => item.get(&item.super_struct.title, &state),
-        "create" => item.create(
-            &item.super_struct.title,
-            &item.super_struct.status.stringify(),
-            &mut state,
-        ),
+        "create" => {
+            let mut data: HashMap<String, String> = HashMap::new();
+            data.insert("creation_date".to_string(), Utc::now().to_string());
+            data.insert("status".to_string(), item.super_struct.status.stringify());
+
+            item.create(&item.super_struct.title, &data, &mut state)
+        }
         "edit" => item.set_to_done(&item.super_struct.title, &mut state),
         _ => println!("Command {} not supported", command),
     }

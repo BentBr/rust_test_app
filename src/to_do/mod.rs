@@ -11,9 +11,9 @@ pub enum ItemTypes {
     Done(Done),
 }
 
-pub fn to_do_factory(title: &str, status: TaskStatus) -> ItemTypes {
+pub fn to_do_factory(title: &str, status: TaskStatus, creation_date: &str) -> ItemTypes {
     match status {
-        TaskStatus::DONE => ItemTypes::Done(Done::new(title)),
-        TaskStatus::OPEN => ItemTypes::Open(Open::new(title)),
+        TaskStatus::DONE => ItemTypes::Done(Done::new(title, creation_date)),
+        TaskStatus::OPEN => ItemTypes::Open(Open::new(title, creation_date)),
     }
 }
