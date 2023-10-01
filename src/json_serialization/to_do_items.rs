@@ -1,6 +1,11 @@
-use crate::to_do::structs::base::Base;
-use crate::to_do::ItemTypes;
+use actix_web::{body::BoxBody, http::header::ContentType, HttpRequest, HttpResponse, Responder};
 use serde::Serialize;
+use serde_json::value::Value;
+use serde_json::Map;
+use std::vec::Vec;
+
+use crate::state::read_file;
+use crate::to_do::{enums::TaskStatus, structs::base::Base, to_do_factory, ItemTypes};
 
 #[derive(Serialize)]
 pub struct ToDoItems {
@@ -31,5 +36,31 @@ impl ToDoItems {
             done_items: done_array_buffer,
             done_items_count: done_count,
         };
+    }
+
+    pub fn get_state() -> ToDoItems {
+        let file_name = dotenv::var("STORAGE_FILE").unwrap();
+        let state: Map<String, Value> = read_file(&file_name);
+        let mut array_buffer = Vec::new();
+
+        for (key, value) in state {
+            let status = TaskStatus::from_string(value["status"].as_str().unwrap().to_string());
+            let item = to_do_factory(&key, status, value["creation_date"].as_str().unwrap());
+            array_buffer.push(item);
+        }
+
+        return ToDoItems::new(array_buffer);
+    }
+}
+
+impl Responder for ToDoItems {
+    type Body = BoxBody;
+
+    fn respond_to(self, _req: &HttpRequest) -> HttpResponse<Self::Body> {
+        let body = serde_json::to_string(&self).unwrap();
+
+        HttpResponse::Ok()
+            .content_type(ContentType::json())
+            .body(body)
     }
 }
