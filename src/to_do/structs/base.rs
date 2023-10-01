@@ -6,5 +6,5 @@ use std::time::SystemTime;
 pub struct Base {
     pub title: String,
     pub status: TaskStatus,
-    pub creation_date: SystemTime
+    pub creation_date: SystemTime,
 }

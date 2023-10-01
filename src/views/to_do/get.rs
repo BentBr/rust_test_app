@@ -2,9 +2,9 @@ use actix_web::{web, Responder};
 use serde_json::value::Value;
 use serde_json::Map;
 
-use crate::state::read_file;
-use crate::to_do::{ItemTypes, to_do_factory, enums::TaskStatus};
 use crate::json_serialization::to_do_items::ToDoItems;
+use crate::state::read_file;
+use crate::to_do::{enums::TaskStatus, to_do_factory, ItemTypes};
 
 pub async fn get() -> impl Responder {
     let file_name: String = dotenv::var("STORAGE_FILE").unwrap();

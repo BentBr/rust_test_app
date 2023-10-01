@@ -1,5 +1,5 @@
-use std::fmt;
 use serde::ser::{Serialize, Serializer};
+use std::fmt;
 
 pub enum TaskStatus {
     DONE,
@@ -37,7 +37,10 @@ impl fmt::Display for TaskStatus {
 }
 
 impl Serialize for TaskStatus {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
         Ok(serializer.serialize_str(&self.stringify().as_str())?)
     }
 }

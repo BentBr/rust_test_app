@@ -1,9 +1,9 @@
-use std::time::SystemTime;
 use super::super::enums::TaskStatus;
 use super::super::traits::create::Create;
 use super::super::traits::edit::Edit;
 use super::super::traits::get::Get;
 use super::base::Base;
+use std::time::SystemTime;
 
 pub struct Open {
     pub super_struct: Base,
