@@ -1,4 +1,6 @@
+use crate::processes::process_input;
 use actix_web::{body::BoxBody, http::header::ContentType, HttpRequest, HttpResponse, Responder};
+use chrono::Utc;
 use serde::Serialize;
 use serde_json::value::Value;
 use serde_json::Map;
@@ -48,6 +50,45 @@ impl ToDoItems {
             let item = to_do_factory(&key, status, value["creation_date"].as_str().unwrap());
             array_buffer.push(item);
         }
+
+        return ToDoItems::new(array_buffer);
+    }
+
+    pub fn get_one_state(req: HttpRequest) -> ToDoItems {
+        let file_name = dotenv::var("STORAGE_FILE").unwrap();
+        let state: Map<String, Value> = read_file(&file_name);
+        let mut array_buffer = Vec::new();
+
+        let title = req.match_info().get("title").unwrap().to_string();
+        for (key, value) in state {
+            if key == title {
+                let status = TaskStatus::from_string(value["status"].as_str().unwrap().to_string());
+                let item = to_do_factory(&title, status, value["creation_date"].as_str().unwrap());
+                array_buffer.push(item);
+
+                break;
+            }
+        }
+
+        return ToDoItems::new(array_buffer);
+    }
+
+    pub fn create_state(req: HttpRequest) -> ToDoItems {
+        let mut array_buffer = Vec::new();
+        let title: String = req.match_info().get("title").unwrap().to_string();
+
+        let item = to_do_factory(
+            &title.as_str(),
+            TaskStatus::OPEN,
+            Utc::now().to_string().as_str(),
+        );
+
+        // Writing to file
+        let file_name: String = dotenv::var("STORAGE_FILE").unwrap();
+        let state: Map<String, Value> = read_file(&file_name);
+        process_input(&item, "create".to_string(), &state);
+
+        array_buffer.push(item);
 
         return ToDoItems::new(array_buffer);
     }

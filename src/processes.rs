@@ -10,7 +10,7 @@ use serde_json::value::Value;
 use serde_json::Map;
 use std::collections::HashMap;
 
-fn process_open(item: Open, command: String, state: &Map<String, Value>) {
+fn process_open(item: &Open, command: String, state: &Map<String, Value>) {
     let mut state = state.clone();
 
     match command.as_str() {
@@ -27,7 +27,7 @@ fn process_open(item: Open, command: String, state: &Map<String, Value>) {
     }
 }
 
-fn process_done(item: Done, command: String, state: &Map<String, Value>) {
+fn process_done(item: &Done, command: String, state: &Map<String, Value>) {
     let mut state = state.clone();
 
     match command.as_str() {
@@ -38,9 +38,9 @@ fn process_done(item: Done, command: String, state: &Map<String, Value>) {
     }
 }
 
-pub fn process_input(item: ItemTypes, command: String, state: &Map<String, Value>) {
+pub fn process_input(item: &ItemTypes, command: String, state: &Map<String, Value>) {
     match item {
-        ItemTypes::Open(item) => process_open(item, command, state),
-        ItemTypes::Done(item) => process_done(item, command, state),
+        ItemTypes::Open(item) => process_open(&item, command, state),
+        ItemTypes::Done(item) => process_done(&item, command, state),
     }
 }
