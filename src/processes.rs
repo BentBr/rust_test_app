@@ -1,9 +1,9 @@
 use super::to_do::structs::done::Done;
 use super::to_do::structs::open::Open;
-use super::to_do::traits::create::Create;
-use super::to_do::traits::delete::Delete;
-use super::to_do::traits::edit::Edit;
-use super::to_do::traits::get::Get;
+use super::to_do::structs::traits::create::Create;
+use super::to_do::structs::traits::delete::Delete;
+use super::to_do::structs::traits::edit::Edit;
+use super::to_do::structs::traits::get::Get;
 use super::to_do::ItemTypes;
 use chrono::prelude::*;
 use serde_json::value::Value;
@@ -40,7 +40,7 @@ fn process_done(item: &Done, command: String, state: &Map<String, Value>) {
 
 pub fn process_input(item: &ItemTypes, command: String, state: &Map<String, Value>) {
     match item {
-        ItemTypes::Open(item) => process_open(&item, command, state),
-        ItemTypes::Done(item) => process_done(&item, command, state),
+        ItemTypes::Open(item) => process_open(item, command, state),
+        ItemTypes::Done(item) => process_done(item, command, state),
     }
 }

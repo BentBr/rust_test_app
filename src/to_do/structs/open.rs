@@ -1,7 +1,7 @@
 use super::super::enums::TaskStatus;
-use super::super::traits::create::Create;
-use super::super::traits::edit::Edit;
-use super::super::traits::get::Get;
+use super::super::structs::traits::create::Create;
+use super::super::structs::traits::edit::Edit;
+use super::super::structs::traits::get::Get;
 use super::base::Base;
 
 pub struct Open {
@@ -12,11 +12,11 @@ impl Open {
     pub fn new(input_title: &str, creation_date: &str) -> Self {
         let base = Base {
             title: input_title.to_string(),
-            status: TaskStatus::OPEN,
+            status: TaskStatus::Open,
             creation_date: creation_date.to_string(),
         };
 
-        return Open { super_struct: base };
+        Open { super_struct: base }
     }
 }
 

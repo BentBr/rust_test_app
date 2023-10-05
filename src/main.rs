@@ -6,7 +6,6 @@ mod views;
 
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use futures::future;
-use sentry;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -43,15 +42,15 @@ fn main() -> std::io::Result<()> {
 
     let server2 = HttpServer::new(move || {
         println!("worker here");
-        App::new().service(web::resource("/one").route(web::get().to(|| two())))
+        App::new().service(web::resource("/one").route(web::get().to(two)))
     })
     .bind("127.0.0.1:9094")?
     .workers(3) // If not set -> using the amount of threads
     .run();
 
     let server3 = HttpServer::new(move || {
-        let app = App::new().configure(views::views_factory);
-        return app;
+        // Returning the app
+        App::new().configure(views::views_factory)
     })
     .bind("127.0.0.1:9095")?
     .workers(3) // If not set -> using the amount of threads

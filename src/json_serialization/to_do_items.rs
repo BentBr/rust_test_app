@@ -32,12 +32,12 @@ impl ToDoItems {
         let open_count: i8 = open_array_buffer.len() as i8;
         let done_count: i8 = done_array_buffer.len() as i8;
 
-        return ToDoItems {
+        ToDoItems {
             open_items: open_array_buffer,
             open_items_count: open_count,
             done_items: done_array_buffer,
             done_items_count: done_count,
-        };
+        }
     }
 
     pub fn get_state() -> ToDoItems {
@@ -51,7 +51,7 @@ impl ToDoItems {
             array_buffer.push(item);
         }
 
-        return ToDoItems::new(array_buffer);
+        ToDoItems::new(array_buffer)
     }
 
     pub fn get_one_state(req: HttpRequest) -> ToDoItems {
@@ -70,7 +70,7 @@ impl ToDoItems {
             }
         }
 
-        return ToDoItems::new(array_buffer);
+        ToDoItems::new(array_buffer)
     }
 
     pub fn create_state(req: HttpRequest) -> ToDoItems {
@@ -78,8 +78,8 @@ impl ToDoItems {
         let title: String = req.match_info().get("title").unwrap().to_string();
 
         let item = to_do_factory(
-            &title.as_str(),
-            TaskStatus::OPEN,
+            title.as_str(),
+            TaskStatus::Open,
             Utc::now().to_string().as_str(),
         );
 
@@ -90,7 +90,7 @@ impl ToDoItems {
 
         array_buffer.push(item);
 
-        return ToDoItems::new(array_buffer);
+        ToDoItems::new(array_buffer)
     }
 }
 
