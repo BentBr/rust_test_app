@@ -5,6 +5,7 @@ use enums::TaskStatus;
 use structs::done::Done;
 use structs::open::Open;
 
+#[derive(Clone)]
 pub enum ItemTypes {
     Open(Open),
     Done(Done),

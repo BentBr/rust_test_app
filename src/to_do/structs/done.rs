@@ -4,6 +4,7 @@ use super::super::structs::traits::edit::Edit;
 use super::super::structs::traits::get::Get;
 use super::base::Base;
 
+#[derive(Clone)]
 pub struct Done {
     pub super_struct: Base,
 }

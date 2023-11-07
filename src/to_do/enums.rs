@@ -1,6 +1,7 @@
 use serde::ser::{Serialize, Serializer};
 use std::fmt;
 
+#[derive(Clone)]
 pub enum TaskStatus {
     Done,
     Open,

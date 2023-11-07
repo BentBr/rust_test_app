@@ -12,6 +12,8 @@ license = "GPL-3"
 
 [dependencies]
 actix-web = "4.4.0"
+cargo-audit = "0.18.2"
+cargo-nextest = "0.9.59"
 chrono = "0.4.31"
 dotenv = "0.15.0"
 futures = "0.3.28"
