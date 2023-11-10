@@ -8,3 +8,6 @@ Playground to get started with rust.
 - `cargo clippy` to have a phpstan analogous function of linting
 - `cargo audit` to check for security issues of packages
 - `cargo nextest run` to test via better test framework than default one of cargo
+
+## Todos and ideas
+- Check for benchmarking

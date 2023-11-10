@@ -10,6 +10,7 @@ pub fn to_do_views_factory(app: &mut ServiceConfig) {
         scope("v1/item")
             .route("create/{title}", post().to(create::create))
             .route("get", get().to(get::get))
-            .route("get/{title}", get().to(get_one::get_one)),
+            .route("get/{title}", get().to(get_one::get_one))
+            .route("edit", post().to(edit::edit)),
     );
 }

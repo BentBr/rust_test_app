@@ -1,5 +1,6 @@
 use serde::ser::{Serialize, Serializer};
 use std::fmt;
+use std::cmp::Eq;
 
 #[derive(Clone)]
 pub enum TaskStatus {
@@ -44,4 +45,12 @@ impl Serialize for TaskStatus {
     {
         serializer.serialize_str(self.stringify().as_str())
     }
+}
+
+impl PartialEq for TaskStatus {
+    fn eq(&self, other: &Self) -> bool {
+        self.stringify() == other.stringify()
+    }
+}
+impl Eq for TaskStatus {
 }
