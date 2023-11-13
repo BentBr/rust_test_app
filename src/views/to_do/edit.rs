@@ -41,7 +41,7 @@ pub async fn edit(to_do_item: web::Json<ToDoItem>) -> HttpResponse {
             let status_string: String = result["status"].to_string().trim_matches('"').to_string();
             let creation_date: String = result["creation_date"].to_string().trim_matches('"').to_string();
 
-            let item = to_do_factory(&title, TaskStatus::from_string(status_string), &creation_date);
+            let item = to_do_factory(title, TaskStatus::from_string(status_string), &creation_date);
 
             HttpResponse::Ok().json(ToDoItem::new(item))
         },
