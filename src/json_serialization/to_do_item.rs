@@ -1,4 +1,6 @@
-use actix_web::{HttpRequest, HttpResponse, Responder, body::BoxBody, http::header::ContentType};
+use std::fmt;
+use std::fmt::{Debug, Formatter};
+use actix_web::{HttpRequest, HttpResponse, Responder, body::BoxBody, http::header::ContentType, web};
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
@@ -46,27 +48,27 @@ impl ToDoItem {
 
         let title: String = req.match_info().get("title").unwrap().to_string();
 
-        for (key, value) in state {
-            let status = TaskStatus::from_string(value["status"].as_str().unwrap().to_string());
+        return match state.get(&title) {
+            Some(result) => {
+                let status_string: String = result["status"].to_string().trim_matches('"').to_string();
+                let creation_date: String = result["creation_date"].to_string().trim_matches('"').to_string();
 
-            if key == title {
-                //let item: ItemTypes = to_do_factory(&title, status, status.);
-                let item = to_do_factory(&key, status, value["creation_date"].as_str().unwrap());
+                let item = to_do_factory(&title, TaskStatus::from_string(status_string), &creation_date);
 
-                return HttpResponse::Ok().json(ToDoItem::new(item));
+                HttpResponse::Ok().json(ToDoItem::new(item))
+            },
+            None => {
+                HttpResponse::NotFound().json(
+                    format!("{} not found in state", &title)
+                )
             }
         }
-
-        HttpResponse::NotFound().json(
-            format!("{} not found in state", &title)
-        )
     }
 
-    pub fn create_state(req: HttpRequest) -> ToDoItem {
-        let title: String = req.match_info().get("title").unwrap().to_string();
+    pub fn create_state(item: web::Json<ToDoItem>) -> ToDoItem {
 
         let item = to_do_factory(
-            title.as_str(),
+            item.title.as_str(),
             TaskStatus::Open,
             Utc::now().to_string().as_str(),
         );

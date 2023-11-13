@@ -20,7 +20,7 @@ impl TaskStatus {
         match input_string.as_str() {
             "Done" => TaskStatus::Done,
             "Open" => TaskStatus::Open,
-            _ => panic!("input {} not supported", input_string),
+            _ => panic!("input {} not supported as at valid status", input_string),
         }
     }
 }
