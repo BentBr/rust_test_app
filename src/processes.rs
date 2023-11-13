@@ -30,7 +30,7 @@ fn process_open(item: &Open, command: String, state: &Map<String, Value>) {
 
             item.set_to_done(&item.super_struct.title, &data, &mut state)
         },
-        _ => println!("Command {} not supported", command),
+        _ => panic!("Command {} not supported in status open", command),
     }
 }
 
@@ -47,7 +47,7 @@ fn process_done(item: &Done, command: String, state: &Map<String, Value>) {
 
             item.set_to_open(&item.super_struct.title, &data, &mut state)
         },
-        _ => println!("Command {} not supported", command),
+        _ => panic!("Command {} not supported", command),
     }
 }
 

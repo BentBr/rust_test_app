@@ -33,12 +33,6 @@ pub async fn edit(to_do_item: web::Json<ToDoItem>) -> HttpResponse {
     let existing_item = to_do_factory(to_do_item.title.as_str(), status.clone(), creation_date.as_str());
     process_input(&existing_item, "edit".to_owned(), &state);
 
-    // Reading back actual (changed) status
-    //let existing_item_changed = to_do_factory(to_do_item.title.as_str(), status.clone(), creation_date.as_str());
-    //let to_do_item_json: ToDoItem = ToDoItem::new(existing_item_changed);
-    //HttpResponse::Ok().json(to_do_item_json)
-
-
     let new_state: Map<String, Value> = read_file(&file_name);
     let title: &String = &to_do_item.title;
 
