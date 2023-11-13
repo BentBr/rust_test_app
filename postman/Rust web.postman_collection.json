@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"neu man\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
+					"raw": "{\n    \"title\": \"letztesiiaeauu23232\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,6 +98,31 @@
 						"{{item-api}}",
 						"get",
 						"neu man"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete one todo",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/{{item-api}}/delete/letztesiiaeauu23232",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{item-api}}",
+						"delete",
+						"letztesiiaeauu23232"
 					]
 				}
 			},
