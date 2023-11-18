@@ -54,7 +54,6 @@ fn main() -> std::io::Result<()> {
         // Returning the app
         App::new()
             .wrap_fn(|req, srv| {
-                println!("{:?}", req);
                 let future = srv.call(req);
                 async {
                     let result = future.await?;
