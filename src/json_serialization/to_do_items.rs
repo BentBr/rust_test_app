@@ -1,6 +1,4 @@
-use crate::processes::process_input;
 use actix_web::{body::BoxBody, http::header::ContentType, HttpRequest, HttpResponse, Responder};
-use chrono::Utc;
 use serde::Serialize;
 use serde_json::value::Value;
 use serde_json::Map;
@@ -69,26 +67,6 @@ impl ToDoItems {
                 break;
             }
         }
-
-        ToDoItems::new(array_buffer)
-    }
-
-    pub fn create_state(req: HttpRequest) -> ToDoItems {
-        let mut array_buffer = Vec::new();
-        let title: String = req.match_info().get("title").unwrap().to_string();
-
-        let item = to_do_factory(
-            title.as_str(),
-            TaskStatus::Open,
-            Utc::now().to_string().as_str(),
-        );
-
-        // Writing to file
-        let file_name: String = dotenv::var("STORAGE_FILE").unwrap();
-        let state: Map<String, Value> = read_file(&file_name);
-        process_input(&item, "create".to_string(), &state);
-
-        array_buffer.push(item);
 
         ToDoItems::new(array_buffer)
     }
