@@ -9,3 +9,24 @@ services:
 
 volumes:
     code-node:
+
+# Set up Mutagen synchronization and forwarding.
+x-mutagen:
+    sync:
+        code-node:
+            alpha: "."
+            beta: "volume://code-node"
+            mode: "two-way-resolved"
+            configurationBeta:
+                permissions:
+                    defaultOwner: "id:33"
+                    defaultGroup: "id:33"
+                    defaultFileMode: 0644
+                    defaultDirectoryMode: 0755
+            ignore:
+                paths:
+                    - "/.idea/*"
+                    - "/.data/*"
+                    - "/src/*"
+                    - "/tests/*"
+                    - "/target/*"

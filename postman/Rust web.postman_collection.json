@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"neu man2\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,13 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/{{item-api}}/create",
+					"raw": "{{host}}/{{item-api}}/create/new mannn3",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{item-api}}",
-						"create"
+						"create",
+						"new mannn3"
 					]
 				}
 			},
@@ -40,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"letztesiiaeauu23232\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
+					"raw": "{\n    \"title\": \"new mannn3\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,14 +91,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{host}}/{{item-api}}/get/neu man",
+					"raw": "{{host}}/{{item-api}}/get/new mannn3",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{item-api}}",
 						"get",
-						"neu man"
+						"new mannn3"
 					]
 				}
 			},
@@ -115,14 +116,31 @@
 					}
 				],
 				"url": {
-					"raw": "{{host}}/{{item-api}}/delete/letztesiiaeauu23232",
+					"raw": "{{host}}/{{item-api}}/delete/new mannn3",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{item-api}}",
 						"delete",
-						"letztesiiaeauu23232"
+						"new mannn3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "home route",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						""
 					]
 				}
 			},
