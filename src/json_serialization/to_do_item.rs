@@ -1,4 +1,5 @@
-use actix_web::{HttpRequest, HttpResponse, Responder, body::BoxBody, http::header::ContentType};
+use actix_web::{HttpRequest, HttpResponse, Responder, body::BoxBody, http::header::ContentType, web};
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 use crate::processes::process_input;
@@ -84,6 +85,22 @@ impl ToDoItem {
                 )
             }
         }
+    }
+
+    pub fn create_state(item: web::Json<ToDoItem>) -> ToDoItem {
+
+        let item = to_do_factory(
+            item.title.as_str(),
+            TaskStatus::Open,
+            Utc::now().to_string().as_str(),
+        );
+
+        // Writing to file
+        let file_name: String = dotenv::var("STORAGE_FILE").unwrap();
+        let state: Map<String, Value> = read_file(&file_name);
+        process_input(&item, "create".to_string(), &state);
+
+        ToDoItem::new(item)
     }
 }
 
