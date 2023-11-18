@@ -3,8 +3,10 @@ mod processes;
 mod state;
 mod to_do;
 mod views;
+mod jwt;
 
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use actix_service::Service;
 use futures::future;
 
 async fn greet(req: HttpRequest) -> impl Responder {
@@ -50,7 +52,16 @@ fn main() -> std::io::Result<()> {
 
     let server3 = HttpServer::new(move || {
         // Returning the app
-        App::new().configure(views::views_factory)
+        App::new()
+            .wrap_fn(|req, srv| {
+                println!("{:?}", req);
+                let future = srv.call(req);
+                async {
+                    let result = future.await?;
+                    Ok(result)
+                }
+            })
+            .configure(views::views_factory)
     })
     .bind("127.0.0.1:9095")?
     .workers(3) // If not set -> using the amount of threads
