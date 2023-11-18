@@ -2,3 +2,6 @@
 
 .data/
 .env
+
+# vue app
+/node_modules
