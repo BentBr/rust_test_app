@@ -12,3 +12,4 @@ Playground to get started with rust.
 ## Todos and ideas
 - Check for benchmarking
 - Check for git cliff + Semver +  Conventional Commits
+- Add codecov.io (makers of sentry)
