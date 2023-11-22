@@ -2,31 +2,18 @@ version: '2.4'
 services:
     node:
         image: node:20-alpine
-        command: sh -c "cd /var/www/html/ && yarn install && tail -f /dev/null" # preventing it from stopping again
+        command: sh -c "cd /var/www/html/ && tail -f /dev/null" # preventing it from stopping again
         volumes:
-            - code-node:/var/www/html
+            - ./fe:/var/www/html
         working_dir: /var/www/html/
+        ports:
+            - '80'
+        networks:
+            default:
+                aliases:
+                    - rusty.docker
+        environment:
+            - VIRTUAL_HOST=.rusty.docker
 
 volumes:
     code-node:
-
-# Set up Mutagen synchronization and forwarding.
-x-mutagen:
-    sync:
-        code-node:
-            alpha: "."
-            beta: "volume://code-node"
-            mode: "two-way-resolved"
-            configurationBeta:
-                permissions:
-                    defaultOwner: "id:33"
-                    defaultGroup: "id:33"
-                    defaultFileMode: 0644
-                    defaultDirectoryMode: 0755
-            ignore:
-                paths:
-                    - "/.idea/*"
-                    - "/.data/*"
-                    - "/src/*"
-                    - "/tests/*"
-                    - "/target/*"
