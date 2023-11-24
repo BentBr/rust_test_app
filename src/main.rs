@@ -8,6 +8,7 @@ mod jwt;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use actix_service::Service;
 use futures::future;
+use actix_cors::Cors;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -51,6 +52,9 @@ fn main() -> std::io::Result<()> {
     .run();
 
     let server3 = HttpServer::new(move || {
+        // Handling CORS issues
+        let cors = Cors::default().allow_any_origin().allow_any_header().allow_any_method();
+
         // Returning the app
         App::new()
             .wrap_fn(|req, srv| {
@@ -61,6 +65,7 @@ fn main() -> std::io::Result<()> {
                 }
             })
             .configure(views::views_factory)
+            .wrap(cors)
     })
     .bind("127.0.0.1:9095")?
     .workers(3) // If not set -> using the amount of threads
