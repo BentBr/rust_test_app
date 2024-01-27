@@ -1,7 +1,7 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import {ref} from 'vue'
+import {defineStore} from 'pinia'
 
-export const toDoItemsStore = defineStore('itemStore', () => {
+export const toDoItemsStore = defineStore('itemsStore', () => {
     let openItems = []
     let doneItems = []
     let openItemsCount = ref(0)

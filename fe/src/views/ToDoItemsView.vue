@@ -1,15 +1,11 @@
-<script setup lang="ts">
-import ToDoItem from "../components/ToDoItem.vue";
-
-import {useRoute} from 'vue-router';
-
-const route = useRoute();
-const title = route.params.title;
+<script setup>
+import CreateToDoItem from "../components/CreateToDoItem.vue";
+import ToDoItems from "../components/ToDoItems.vue";
 </script>
 
 <template>
-    <div class="todo">
-        <h1>{{ title }}</h1>
+    <div class="todos">
+        <h1>ToDos</h1>
 
         <!-- Suspense component to show to do items  -->
         <Suspense>
@@ -17,7 +13,7 @@ const title = route.params.title;
                 <div>loading</div>
             </template>
 
-            <ToDoItem/>
+            <ToDoItems/>
         </Suspense>
     </div>
 </template>

@@ -1,54 +1,47 @@
 <script setup>
-</script>
-<script  lang="ts">
-import { defineComponent } from "vue";
-import { toDoItemsStore } from '../stores/ToDoItems'
+import {onMounted} from 'vue';
+import {toDoItemsStore} from '../stores/ToDoItems';
 
-export default defineComponent({
-  async setup() {
-    const itemStore = toDoItemsStore()
+const itemsStore = toDoItemsStore();
 
-    // Updating
-    await itemStore.update()
-
-    return {
-      itemStore
-    }
-  }
-})
+onMounted(async () => {
+    // Use the title to fetch data from the store
+    await itemsStore.update();
+});
 </script>
 
 <template>
-  <div>
+    <div>
 
-    <hr>
+        <hr>
 
-    <div v-if="itemStore.openItemsCount === 1">
-      <h2>You have {{ itemStore.openItemsCount }} open item</h2>
+        <div v-if="itemsStore.openItemsCount === 1">
+            <h2>You have {{ itemsStore.openItemsCount }} open item</h2>
+        </div>
+        <div v-else>
+            <h2>You have {{ itemsStore.openItemsCount }} open items</h2>
+        </div>
+
+        <!-- list to do items -->
+        <ul>
+            <li v-for="item in itemsStore.openItems"><a :href="'/todos/' + item.title">{{ item.title }}</a></li>
+        </ul>
+
+        <hr>
+
+        <div v-if="itemsStore.doneItemsCount === 1">
+            <h2>You have {{ itemsStore.doneItemsCount }} done item</h2>
+        </div>
+        <div v-else>
+            <h2>You have {{ itemsStore.doneItemsCount }} done items</h2>
+        </div>
+
     </div>
-    <div v-else>
-      <h2>You have {{ itemStore.openItemsCount }} open items</h2>
-    </div>
-
-    <!-- list to do items -->
-    <ul>
-      <li v-for="item in itemStore.openItems">{{ item.title }}</li>
-    </ul>
-
-    <hr>
-
-    <div v-if="itemStore.doneItemsCount === 1">
-      <h2>You have {{ itemStore.doneItemsCount }} done item</h2>
-    </div>
-    <div v-else>
-      <h2>You have {{ itemStore.doneItemsCount }} done items</h2>
-    </div>
-  </div>
 </template>
 
 <style scoped>
-  hr {
+hr {
     margin-bottom: 20px;
     margin-top: 40px;
-  }
+}
 </style>
