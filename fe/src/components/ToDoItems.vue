@@ -1,6 +1,8 @@
 <script setup>
 import {onMounted} from 'vue';
 import {toDoItemsStore} from '../stores/ToDoItems';
+import UpdateToDoItem from "./UpdateButton.vue";
+import ToDoItemLink from "./ToDoItemLink.vue";
 
 const itemsStore = toDoItemsStore();
 
@@ -24,7 +26,10 @@ onMounted(async () => {
 
         <!-- list to do items -->
         <ul>
-            <li v-for="item in itemsStore.openItems"><a :href="'/todos/' + item.title">{{ item.title }}</a></li>
+            <li v-for="item in itemsStore.openItems">
+                <ToDoItemLink :title="item.title"></ToDoItemLink>
+                <UpdateToDoItem :title="item.title" :status="item.status"></UpdateToDoItem>
+            </li>
         </ul>
 
         <hr>
