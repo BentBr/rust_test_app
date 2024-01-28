@@ -3,5 +3,8 @@
 .data/
 .env
 
+# IDE
+.idea/
+
 # vue app
 /node_modules
