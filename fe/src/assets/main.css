@@ -33,14 +33,3 @@ a,
         padding: 0 2rem;
     }
 }
-
-button {
-    background-color: hsla(160, 100%, 37%, 1);
-    border: none;
-    color: black;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-
-    cursor: pointer;
-}

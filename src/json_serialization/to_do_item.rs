@@ -1,9 +1,9 @@
-use actix_web::{HttpRequest, HttpResponse, Responder, body::BoxBody, http::header::ContentType};
-use serde::{Deserialize, Serialize};
-use serde_json::{Map, Value};
 use crate::state::read_file;
 use crate::to_do::enums::TaskStatus;
-use crate::to_do::{ItemTypes, to_do_factory};
+use crate::to_do::{to_do_factory, ItemTypes};
+use actix_web::{body::BoxBody, http::header::ContentType, HttpRequest, HttpResponse, Responder};
+use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value};
 
 #[derive(Deserialize, Serialize)]
 pub struct ToDoItem {
@@ -17,18 +17,18 @@ impl ToDoItem {
         let status: String;
         let creation_date: String;
         let title: String;
-        
+
         match input_item {
             ItemTypes::Open(packed) => {
                 title = packed.super_struct.title;
                 creation_date = packed.super_struct.creation_date;
-                status = packed. super_struct.status.to_string();
-            },
+                status = packed.super_struct.status.to_string();
+            }
             ItemTypes::Done(packed) => {
                 title = packed.super_struct.title;
                 creation_date = packed.super_struct.creation_date;
-                status = packed. super_struct.status.to_string();
-            },
+                status = packed.super_struct.status.to_string();
+            }
         }
 
         ToDoItem {
@@ -37,7 +37,7 @@ impl ToDoItem {
             status,
         }
     }
-    
+
     pub fn get_state(req: HttpRequest) -> HttpResponse {
         let file_name = dotenv::var("STORAGE_FILE").unwrap();
         let state: Map<String, Value> = read_file(&file_name);
@@ -46,19 +46,23 @@ impl ToDoItem {
 
         return match state.get(&title) {
             Some(result) => {
-                let status_string: String = result["status"].to_string().trim_matches('"').to_string();
-                let creation_date: String = result["creation_date"].to_string().trim_matches('"').to_string();
+                let status_string: String =
+                    result["status"].to_string().trim_matches('"').to_string();
+                let creation_date: String = result["creation_date"]
+                    .to_string()
+                    .trim_matches('"')
+                    .to_string();
 
-                let item = to_do_factory(&title, TaskStatus::from_string(status_string), &creation_date);
+                let item = to_do_factory(
+                    &title,
+                    TaskStatus::from_string(status_string),
+                    &creation_date,
+                );
 
                 HttpResponse::Ok().json(ToDoItem::new(item))
-            },
-            None => {
-                HttpResponse::NotFound().json(
-                    format!("{} not found in state", &title)
-                )
             }
-        }
+            None => HttpResponse::NotFound().json(format!("{} not found in state", &title)),
+        };
     }
 }
 

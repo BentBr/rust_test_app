@@ -1,14 +1,14 @@
 pub mod json_serialization;
+mod jwt;
 mod processes;
 mod state;
 mod to_do;
 mod views;
-mod jwt;
 
-use actix_web::{web, App, HttpRequest, HttpServer, Responder};
-use actix_service::Service;
-use futures::future;
 use actix_cors::Cors;
+use actix_service::Service;
+use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use futures::future;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -53,7 +53,10 @@ fn main() -> std::io::Result<()> {
 
     let server3 = HttpServer::new(move || {
         // Handling CORS issues
-        let cors = Cors::default().allow_any_origin().allow_any_header().allow_any_method();
+        let cors = Cors::default()
+            .allow_any_origin()
+            .allow_any_header()
+            .allow_any_method();
 
         // Returning the app
         App::new()

@@ -13,6 +13,8 @@ Playground to get started with rust.
 It's setup to serve on `rusty.docker` (On default port 80). See _vite.config.js_
 
 ## Todos and ideas
+- proper feedback during deletion
+- adding description and possibility to change it
 - Check for benchmarking
 - Check for git cliff + Semver +  Conventional Commits
 - Add codecov.io (makers of sentry)

@@ -1,8 +1,8 @@
 mod create;
+mod delete;
+mod edit;
 mod get;
 mod get_one;
-mod edit;
-mod delete;
 
 use actix_web::web::{delete, get, post, scope, ServiceConfig};
 

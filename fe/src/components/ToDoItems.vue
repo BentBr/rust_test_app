@@ -3,6 +3,7 @@ import {onMounted} from 'vue';
 import {toDoItemsStore} from '../stores/ToDoItems';
 import UpdateToDoItem from "./UpdateButton.vue";
 import ToDoItemLink from "./ToDoItemLink.vue";
+import CreateToDoItem from "./CreateToDoItem.vue";
 
 const itemsStore = toDoItemsStore();
 
@@ -14,6 +15,8 @@ onMounted(async () => {
 
 <template>
     <div>
+
+        <create-to-do-item @reload-list="itemsStore.update()"></create-to-do-item>
 
         <hr>
 

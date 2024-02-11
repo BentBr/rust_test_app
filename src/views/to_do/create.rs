@@ -1,14 +1,13 @@
 use crate::json_serialization::to_do_item::ToDoItem;
-use actix_web::{HttpRequest, HttpResponse};
-use chrono::Utc;
-use serde_json::{Map, Value};
 use crate::processes::process_input;
 use crate::state::read_file;
 use crate::to_do::enums::TaskStatus;
 use crate::to_do::to_do_factory;
+use actix_web::{HttpRequest, HttpResponse};
+use chrono::Utc;
+use serde_json::{Map, Value};
 
 pub async fn create(req: HttpRequest) -> HttpResponse {
-
     let item = to_do_factory(
         req.match_info().get("title").unwrap().to_string().as_str(),
         TaskStatus::Open,

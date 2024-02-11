@@ -1,7 +1,7 @@
-use std::collections::HashMap;
 use serde_json::json;
 use serde_json::Map;
 use serde_json::Value;
+use std::collections::HashMap;
 
 use crate::state::write_to_file;
 

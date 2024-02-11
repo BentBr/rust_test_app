@@ -1,9 +1,9 @@
 use actix_web::dev::Payload;
 use actix_web::{Error, FromRequest, HttpRequest};
-use futures::future::{Ready, ok};
+use futures::future::{ok, Ready};
 
 pub struct JwToken {
-    pub message: String
+    pub message: String,
 }
 
 impl FromRequest for JwToken {
@@ -14,13 +14,13 @@ impl FromRequest for JwToken {
         match req.headers().get("token") {
             Some(data) => {
                 let token = JwToken {
-                    message: data.to_str().unwrap().to_string()
+                    message: data.to_str().unwrap().to_string(),
                 };
                 ok(token)
-            },
+            }
             None => {
                 let token = JwToken {
-                    message: String::from("Nothing found")
+                    message: String::from("Nothing found"),
                 };
                 ok(token)
             }

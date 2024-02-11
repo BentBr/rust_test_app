@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ToDoItem from "../components/ToDoItem.vue";
+import ToDoItem from "../components/ToDoItemDetails.vue";
 
 import {useRoute} from 'vue-router';
 
