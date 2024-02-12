@@ -1,5 +1,4 @@
 <script setup>
-import {defineProps} from 'vue';
 import {toDoItemStore} from '../stores/ToDoItem';
 
 const itemStore = toDoItemStore();

@@ -1,6 +1,6 @@
 <script setup>
     import {toDoItemStore} from '../stores/ToDoItem';
-    import {ref, watch, defineEmits} from 'vue';
+    import {ref, watch} from 'vue';
 
     const emit = defineEmits(['reload-list']);
 
