@@ -1,4 +1,5 @@
-version: '2.4'
+version: '3.7'
+
 services:
     node:
         image: node:20-alpine
@@ -14,6 +15,20 @@ services:
                     - rusty.docker
         environment:
             - VIRTUAL_HOST=.rusty.docker
+
+    postgres:
+        image: 'postgres:11.2'
+        ports:
+            - '5432:5432'
+        environment:
+            - 'POSTGRES_USER=username'
+            - 'POSTGRES_DB=to_do'
+            - 'POSTGRES_PASSWORD=password'
+            - VIRTUAL_HOST=.pg-rusty.docker
+        networks:
+            default:
+                aliases:
+                    - pg-rusty.docker
 
 volumes:
     code-node:
