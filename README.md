@@ -11,6 +11,9 @@ Playground to get started with rust.
 - node must be used from within the container: `docker-compose exec node sh` -> `npm run dev`
 - Or use the docker-compose setup via dhingy router: `docker-compose exec node npm run dev` \
 It's setup to serve on `rusty.docker` (On default port 80). See _vite.config.js_
+- `diesel migration generate create_to_do_items` Using diesel to create a new migration
+- Running the migration: `diesel migration run`
+- Undoing and running again the migration: `diesel migration redo`
 
 ## Todos and ideas
 - proper feedback during deletion
@@ -18,3 +21,8 @@ It's setup to serve on `rusty.docker` (On default port 80). See _vite.config.js_
 - Check for benchmarking
 - Check for git cliff + Semver +  Conventional Commits
 - Add codecov.io (makers of sentry)
+
+## Initial Setup
+Postgres stuff:
+- `brew install libpq postgresql@15` + `brew link postgresql@1`
+- `cargo install diesel_cli --no-default-features --features postgres`

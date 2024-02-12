@@ -17,6 +17,7 @@ actix-web = "4.4.0"
 cargo-audit = "0.18.2"
 cargo-nextest = "0.9.59"
 chrono = "0.4.31"
+diesel = { version = "2.1.4", features = ["postgres", "chrono", "r2d2"] }
 dotenv = "0.15.0"
 futures = "0.3.28"
 sentry = "0.31.7"
