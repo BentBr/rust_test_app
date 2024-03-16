@@ -9,6 +9,7 @@ pub struct Task {
     pub title: String,
     pub description: String,
     pub status: TaskStatus,
-    pub date: NaiveDateTime,
-    pub deleted: bool,
+    pub creation_date: NaiveDateTime,
+    pub modification_date: NaiveDateTime,
+    pub deletion_date: NaiveDateTime,
 }

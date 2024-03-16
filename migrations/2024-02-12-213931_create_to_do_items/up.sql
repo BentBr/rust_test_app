@@ -4,6 +4,7 @@ CREATE TABLE to_do (
     title VARCHAR NOT NULL,
     description TEXT NOT NULL DEFAULT '',
     status status NOT NULL DEFAULT 'Open',
-    date TIMESTAMP NOT NULL DEFAULT NOW(),
-    deleted BOOLEAN NOT NULL DEFAULT false
+    creation_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    modification_date TIMESTAMP,
+    deletion_date TIMESTAMP
 )
