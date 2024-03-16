@@ -11,30 +11,37 @@ use crate::to_do::{enums::TaskStatus, structs::base::Base, to_do_factory, ItemTy
 pub struct ToDoItems {
     pub open_items: Vec<Base>,
     pub done_items: Vec<Base>,
+    pub in_progress_items: Vec<Base>,
     pub open_items_count: i8,
     pub done_items_count: i8,
+    pub in_progress_items_count: i8,
 }
 
 impl ToDoItems {
     pub fn new(input_items: Vec<ItemTypes>) -> ToDoItems {
         let mut open_array_buffer = Vec::new();
         let mut done_array_buffer = Vec::new();
+        let mut in_progress_array_buffer = Vec::new();
 
         for item in input_items {
             match item {
                 ItemTypes::Open(packed) => open_array_buffer.push(packed.super_struct),
                 ItemTypes::Done(packed) => done_array_buffer.push(packed.super_struct),
+                ItemTypes::InProgress(packed) => in_progress_array_buffer.push(packed.super_struct),
             }
         }
 
         let open_count: i8 = open_array_buffer.len() as i8;
         let done_count: i8 = done_array_buffer.len() as i8;
+        let in_progress_count: i8 = in_progress_array_buffer.len() as i8;
 
         ToDoItems {
             open_items: open_array_buffer,
             open_items_count: open_count,
             done_items: done_array_buffer,
             done_items_count: done_count,
+            in_progress_items: in_progress_array_buffer,
+            in_progress_items_count: in_progress_count,
         }
     }
 

@@ -34,7 +34,7 @@ pub async fn edit(to_do_item: web::Json<ToDoItem>) -> HttpResponse {
     // Changing status
     let existing_item = to_do_factory(
         to_do_item.title.as_str(),
-        status.clone(),
+        status,
         creation_date.as_str(),
     );
     process_input(&existing_item, "edit".to_owned(), &state);

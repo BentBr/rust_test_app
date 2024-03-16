@@ -3,7 +3,7 @@ version: '3.7'
 services:
     node:
         image: node:20-alpine
-        command: sh -c "cd /var/www/html/ && tail -f /dev/null" # preventing it from stopping again
+        command: sh -c "cd /var/www/html/ && npm run dev && tail -f /dev/null" # preventing it from stopping again
         volumes:
             - ./fe:/var/www/html
         working_dir: /var/www/html/

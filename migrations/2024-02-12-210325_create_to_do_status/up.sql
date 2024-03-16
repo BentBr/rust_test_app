@@ -1,0 +1,1 @@
+CREATE TYPE status AS ENUM ('Open', 'In progress', 'Done');

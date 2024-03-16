@@ -29,6 +29,11 @@ impl ToDoItem {
                 creation_date = packed.super_struct.creation_date;
                 status = packed.super_struct.status.to_string();
             }
+            ItemTypes::InProgress(packed) => {
+                title = packed.super_struct.title;
+                creation_date = packed.super_struct.creation_date;
+                status = packed.super_struct.status.to_string();
+            }
         }
 
         ToDoItem {

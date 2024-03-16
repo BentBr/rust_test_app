@@ -1,10 +1,16 @@
+mod database;
 pub mod json_serialization;
 mod jwt;
+mod models;
 mod processes;
+mod schema;
 mod state;
 mod to_do;
 mod views;
 
+#[macro_use]
+extern crate diesel;
+extern crate dotenv;
 use actix_cors::Cors;
 use actix_service::Service;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
