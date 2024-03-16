@@ -26,7 +26,7 @@ migration_up:
 	diesel migration run
 
 migration_redo:
-	diesel migration run
+	diesel migration redo
 
 readme:
 	@echo "\033[32m cargo run\033[39m to run the (rust) server"
