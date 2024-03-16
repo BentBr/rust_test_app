@@ -4,7 +4,7 @@ use chrono::NaiveDateTime;
 
 #[derive(Queryable, Identifiable)]
 #[diesel(table_name = to_do)]
-pub struct Item {
+pub struct Task {
     pub id: i32,
     pub title: String,
     pub description: String,

@@ -32,11 +32,7 @@ pub async fn edit(to_do_item: web::Json<ToDoItem>) -> HttpResponse {
     };
 
     // Changing status
-    let existing_item = to_do_factory(
-        to_do_item.title.as_str(),
-        status,
-        creation_date.as_str(),
-    );
+    let existing_item = to_do_factory(to_do_item.title.as_str(), status, creation_date.as_str());
     process_input(&existing_item, "edit".to_owned(), &state);
 
     let new_state: Map<String, Value> = read_file(&file_name);
@@ -60,7 +56,7 @@ pub async fn edit(to_do_item: web::Json<ToDoItem>) -> HttpResponse {
         }
         None => {
             panic!(
-                "Could not found item \"{}\" after changing to new status {}",
+                "Could not found task \"{}\" after changing to new status {}",
                 &title, status_string
             )
         }

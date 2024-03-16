@@ -3,8 +3,8 @@ pub mod structs;
 
 use enums::TaskStatus;
 use structs::done::Done;
-use structs::open::Open;
 use structs::in_progress::InProgress;
+use structs::open::Open;
 
 #[derive(Clone)]
 pub enum ItemTypes {

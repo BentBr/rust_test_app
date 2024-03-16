@@ -1,6 +1,6 @@
 use super::to_do::structs::done::Done;
-use super::to_do::structs::open::Open;
 use super::to_do::structs::in_progress::InProgress;
+use super::to_do::structs::open::Open;
 use super::to_do::structs::traits::create::Create;
 use super::to_do::structs::traits::delete::Delete;
 use super::to_do::structs::traits::edit::Edit;

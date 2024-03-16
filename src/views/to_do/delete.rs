@@ -26,7 +26,7 @@ pub async fn delete(req: HttpRequest) -> HttpResponse {
             );
             process_input(&item, "delete".to_owned(), &state);
 
-            HttpResponse::Ok().json(format!("Deleted item \"{}\"", &title))
+            HttpResponse::Ok().json(format!("Deleted task \"{}\"", &title))
         }
         None => {
             HttpResponse::NotFound().json(format!("{} not found in state for deletion", &title))
