@@ -1,6 +1,6 @@
 CREATE TABLE to_do (
     id SERIAL PRIMARY KEY,
-    uuid UUID NOT NULL,
+    uuid UUID NOT NULL UNIQUE,
     title VARCHAR NOT NULL,
     description TEXT NOT NULL DEFAULT '',
     status status NOT NULL DEFAULT 'Open',

@@ -3,6 +3,12 @@ use serde::Serialize;
 use serde_json::value::Value;
 use serde_json::Map;
 use std::vec::Vec;
+use crate::diesel;
+use diesel::{ExpressionMethods, RunQueryDsl};
+use diesel::query_dsl::methods::OrderDsl;
+use crate::database::establish_connection;
+use crate::models::task::item::Task;
+use crate::schema::to_do;
 
 use crate::state::read_file;
 use crate::to_do::{enums::TaskStatus, structs::base::Base, to_do_factory, ItemTypes};
@@ -46,9 +52,26 @@ impl ToDoItems {
     }
 
     pub fn get_state() -> ToDoItems {
+        let mut connection = establish_connection();
+        let mut array_buffer = Vec::new();
+
+        let items = to_do::table
+            .order(to_do::columns::id.asc())
+            .load::<Task>(&mut connection).unwrap();
+
+        for item in items {
+            println!("Here! {:?}", &item);
+            let status = TaskStatus::from_string(item.status.stringify());
+            let status_item = to_do_factory(&item.title, status, &item.creation_date.to_string());
+
+            array_buffer.push(status_item);
+        }
+
+        ToDoItems::new(array_buffer)
+
+        /*
         let file_name = dotenv::var("STORAGE_FILE").unwrap();
         let state: Map<String, Value> = read_file(&file_name);
-        let mut array_buffer = Vec::new();
 
         for (key, value) in state {
             let status = TaskStatus::from_string(value["status"].as_str().unwrap().to_string());
@@ -56,7 +79,8 @@ impl ToDoItems {
             array_buffer.push(item);
         }
 
-        ToDoItems::new(array_buffer)
+
+         */
     }
 
     pub fn get_one_state(req: HttpRequest) -> ToDoItems {
