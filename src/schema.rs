@@ -16,7 +16,8 @@ diesel::table! {
         title -> Varchar,
         description -> Text,
         status -> Status,
-        date -> Timestamp,
-        deleted -> Bool,
+        creation_date -> Timestamp,
+        modification_date -> Nullable<Timestamp>,
+        deletion_date -> Nullable<Timestamp>,
     }
 }
