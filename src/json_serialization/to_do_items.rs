@@ -60,27 +60,15 @@ impl ToDoItems {
             .load::<Task>(&mut connection).unwrap();
 
         for item in items {
-            println!("Here! {:?}", &item);
+            println!("{:?}", &item);
             let status = TaskStatus::from_string(item.status.stringify());
             let status_item = to_do_factory(&item.title, status, &item.creation_date.to_string());
 
             array_buffer.push(status_item);
         }
 
+        println!("Queried {} tasks from db.", array_buffer.iter().count());
         ToDoItems::new(array_buffer)
-
-        /*
-        let file_name = dotenv::var("STORAGE_FILE").unwrap();
-        let state: Map<String, Value> = read_file(&file_name);
-
-        for (key, value) in state {
-            let status = TaskStatus::from_string(value["status"].as_str().unwrap().to_string());
-            let item = to_do_factory(&key, status, value["creation_date"].as_str().unwrap());
-            array_buffer.push(item);
-        }
-
-
-         */
     }
 
     pub fn get_one_state(req: HttpRequest) -> ToDoItems {

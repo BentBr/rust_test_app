@@ -8,7 +8,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
 
     async function get(title) {
         console.log(title + 'in store we are');
-        const item = await fetch("http://localhost:9095/v1/item/get/" + title).then(res => res.json());
+        const item = await fetch("http://localhost:9095/v1/task/get/" + title).then(res => res.json());
 
         this.title = item.title
         this.creationDate = item.creation_date
@@ -17,7 +17,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
 
     async function create(title) {
         const item = await fetch(
-            "http://localhost:9095/v1/item/create/" + title,
+            "http://localhost:9095/v1/task/create/" + title,
             {
                 method: "POST",
                 headers: {
@@ -33,7 +33,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
 
     async function remove(title) {
         await fetch(
-            "http://localhost:9095/v1/item/delete/" + title,
+            "http://localhost:9095/v1/task/delete/" + title,
             {
                 method: "DELETE"
             }
@@ -46,7 +46,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
 
     async function edit(title) {
         const item = await fetch(
-            "http://localhost:9095/v1/item/edit",
+            "http://localhost:9095/v1/task/edit",
             {
                 method: "POST",
                 headers: {
