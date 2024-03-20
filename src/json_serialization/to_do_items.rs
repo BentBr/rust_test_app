@@ -67,7 +67,7 @@ impl ToDoItems {
             array_buffer.push(status_item);
         }
 
-        println!("Queried {} tasks from db.", array_buffer.iter().count());
+        println!("Queried {} tasks from db.", array_buffer.len());
         ToDoItems::new(array_buffer)
     }
 
