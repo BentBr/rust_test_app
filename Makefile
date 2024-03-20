@@ -2,6 +2,7 @@ default: help
 
 help:
 		@echo "Please use \033[32mmake \033[32m<target>\033[39m where <target> is one of"
+		@echo "  \033[32m help \033[39m               Shows this help"
 		@echo "  \033[32m start \033[39m              Start the setup with node server"
 		@echo "  \033[32m stop \033[39m               Stops the setup"
 		@echo "  \033[32m build \033[39m              Rebuilds the setup"
@@ -9,6 +10,9 @@ help:
 		@echo "  \033[32m migration_up \033[39m       Running diesel migrations"
 		@echo "  \033[32m migration_redo \033[39m     Running diesel migrations down + up"
 		@echo "  \033[32m readme \033[39m             Shows some help"
+
+list:
+	$(MAKE) help
 
 start:
 	docker-compose up -d
