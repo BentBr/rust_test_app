@@ -1,35 +1,22 @@
-use crate::processes::process_input;
-use crate::state::read_file;
-use crate::to_do::enums::TaskStatus;
-use crate::to_do::to_do_factory;
+use crate::helpers::uuid::parse_uuid_from_request;
+use crate::json_serialization::response::response_item::ResponseItem;
+use crate::json_serialization::response::response_status::ResponseStatus;
+use crate::models::task::item::delete_item;
 use actix_web::{HttpRequest, HttpResponse};
-use serde_json::{Map, Value};
+use uuid::Uuid;
 
-pub async fn delete(req: HttpRequest) -> HttpResponse {
-    let file_name = dotenv::var("STORAGE_FILE").unwrap();
-    let state: Map<String, Value> = read_file(&file_name);
+pub async fn delete(request: HttpRequest) -> HttpResponse {
+    let uuid: Uuid;
+    match parse_uuid_from_request(request) {
+        Err(response) => return response,
+        Ok(valid_uuid) => uuid = valid_uuid,
+    }
 
-    let title: String = req.match_info().get("title").unwrap().to_string();
+    delete_item(uuid);
 
-    return match state.get(&title) {
-        Some(result) => {
-            let status_string: String = result["status"].to_string().trim_matches('"').to_string();
-            let creation_date: String = result["creation_date"]
-                .to_string()
-                .trim_matches('"')
-                .to_string();
-
-            let item = to_do_factory(
-                &title,
-                TaskStatus::from_string(status_string),
-                &creation_date,
-            );
-            process_input(&item, "delete".to_owned(), &state);
-
-            HttpResponse::Ok().json(format!("Deleted task \"{}\"", &title))
-        }
-        None => {
-            HttpResponse::NotFound().json(format!("{} not found in state for deletion", &title))
-        }
-    };
+    HttpResponse::Ok().json(ResponseItem::new(
+        ResponseStatus::Success,
+        "Deleted task".to_string(),
+        "Done with success".to_string(),
+    ))
 }

@@ -10,11 +10,22 @@ pub struct Done {
 }
 
 impl Done {
-    pub fn new(input_title: &str, creation_date: &str) -> Self {
+    pub fn new(
+        uuid: Option<&str>,
+        title: &str,
+        description: &str,
+        creation_date: &str,
+        modification_date: Option<&str>,
+        deletion_date: Option<&str>,
+    ) -> Self {
         let base = Base {
-            title: input_title.to_string(),
+            uuid: Some(uuid.unwrap().to_string()),
+            title: title.to_string(),
+            description: description.to_string(),
             status: TaskStatus::Done,
             creation_date: creation_date.to_string(),
+            modification_date: Some(modification_date.unwrap().to_string()),
+            deletion_date: Some(deletion_date.unwrap().to_string()),
         };
 
         Done { super_struct: base }

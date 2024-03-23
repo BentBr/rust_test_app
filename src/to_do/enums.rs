@@ -29,10 +29,10 @@ impl TaskStatus {
 
     pub fn from_string(input_string: String) -> Self {
         match input_string.as_str() {
-            "Done" => TaskStatus::Done,
-            "Open" => TaskStatus::Open,
-            "In Progress" => TaskStatus::InProgress,
-            _ => panic!("input {} not supported as at valid status", input_string),
+            "Done" => Self::Done,
+            "Open" => Self::Open,
+            "In Progress" => Self::InProgress,
+            _ => panic!("input '{}' not supported as at valid status", input_string),
         }
     }
 }

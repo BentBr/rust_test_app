@@ -6,16 +6,18 @@
 
     const itemStore = toDoItemStore();
     const title = ref('');
+    const description = ref('');
     const createBool = ref(false);
 
     const handleCreate = async () => {
-        await itemStore.create(title.value);
+        await itemStore.create(title.value, description.value);
         createBool.value = false;
         emit('reload-list');
     };
 
     watch(() => createBool.value, () => {
         title.value = ''; // Reset title when createBool changes
+        description.value = '';
     });
 </script>
 
@@ -33,11 +35,17 @@
         </div>
 
         <div v-if="createBool === true">
-            <input v-model="title" placeholder="Enter a title for your task" />
-
-            <button class="create" @click="handleCreate">
-                Create
-            </button>
+            <div class="row">
+                <input v-model="title" placeholder="Enter a title for your task" />
+            </div>
+            <div class="row">
+                <textarea v-model="description" placeholder="Awesome task description" />
+            </div>
+            <div class="row">
+                <button class="create" @click="handleCreate">
+                    Create
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -58,8 +66,11 @@ button {
 .cancel {
     background-color: hsl(351, 94%, 33%);
 }
-input {
+input,textarea {
     font: inherit;
+    margin: 0.2em 0.5em;
+}
+button {
     margin: 0.2em 0.5em;
 }
 </style>

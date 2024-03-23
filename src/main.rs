@@ -1,4 +1,5 @@
 mod database;
+mod helpers;
 pub mod json_serialization;
 mod jwt;
 mod models;

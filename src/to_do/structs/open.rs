@@ -10,11 +10,20 @@ pub struct Open {
 }
 
 impl Open {
-    pub fn new(input_title: &str, creation_date: &str) -> Self {
+    pub fn new(
+        title: &str,
+        description: &str,
+        creation_date: &str,
+        modification_date: Option<&str>,
+    ) -> Self {
         let base = Base {
-            title: input_title.to_string(),
-            status: TaskStatus::Open,
+            uuid: None,
+            title: title.to_string(),
+            description: description.to_string(),
+            status: TaskStatus::Done,
             creation_date: creation_date.to_string(),
+            modification_date: Some(modification_date.unwrap().to_string()),
+            deletion_date: None,
         };
 
         Open { super_struct: base }

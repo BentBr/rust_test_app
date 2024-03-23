@@ -21,14 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/{{item-api}}/create/new mannn3",
+					"raw": "{{host}}/{{item-api}}/create/new mannn3 drölf",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{item-api}}",
 						"create",
-						"new mannn3"
+						"new mannn3 drölf"
 					]
 				}
 			},
@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"new mannn3\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
+					"raw": "{\n    \"title\": \"new mannn3 drölf\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,14 +91,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{host}}/{{item-api}}/get/new mannn3",
+					"raw": "{{host}}/{{item-api}}/get/new mannn3 drölf",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{item-api}}",
 						"get",
-						"new mannn3"
+						"new mannn3 drölf"
 					]
 				}
 			},
@@ -116,14 +116,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{host}}/{{item-api}}/delete/new mannn3",
+					"raw": "{{host}}/{{item-api}}/delete/neu man3",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{item-api}}",
 						"delete",
-						"new mannn3"
+						"neu man3"
 					]
 				}
 			},
