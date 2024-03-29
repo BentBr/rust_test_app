@@ -1,6 +1,6 @@
 use crate::database::establish_connection;
+use crate::models::task_status::item::TaskStatus;
 use crate::schema::to_do;
-use crate::to_do::enums::TaskStatus;
 use diesel::RunQueryDsl;
 use uuid::Uuid;
 

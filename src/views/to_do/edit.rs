@@ -1,13 +1,13 @@
 use crate::helpers::uuid::parse_uuid_from_request;
+use crate::json_serialization::edit_to_do_item::EditToDoItem;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
+use crate::json_serialization::to_do_item::ToDoItem;
 use crate::models::task::item::{edit_item, fetch_item};
-use crate::to_do::enums::TaskStatus;
+use crate::models::task_status::item::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
 use sentry::Level;
 use uuid::Uuid;
-use crate::json_serialization::edit_to_do_item::EditToDoItem;
-use crate::json_serialization::to_do_item::ToDoItem;
 
 pub async fn edit(to_do_item: web::Json<EditToDoItem>, request: HttpRequest) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {

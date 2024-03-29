@@ -4,7 +4,6 @@ pub mod json_serialization;
 mod jwt;
 mod models;
 mod schema;
-mod to_do;
 mod views;
 
 #[macro_use]

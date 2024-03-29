@@ -6,7 +6,7 @@ pub struct EditToDoItem {
     pub uuid: String,
     pub title: String,
     pub description: String,
-    pub status: String
+    pub status: String,
 }
 
 impl EditToDoItem {
@@ -15,7 +15,7 @@ impl EditToDoItem {
             uuid: input_item.uuid.to_string(),
             title: input_item.title.to_owned(),
             description: input_item.description.to_owned(),
-            status: input_item.status.to_string()
+            status: input_item.status.to_string(),
         }
     }
 }
