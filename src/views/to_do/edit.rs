@@ -1,19 +1,19 @@
 use crate::helpers::uuid::parse_uuid_from_request;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::to_do_item::ToDoItem;
 use crate::models::task::item::{edit_item, fetch_item};
 use crate::to_do::enums::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
-use serde_json::json;
+use sentry::Level;
 use uuid::Uuid;
+use crate::json_serialization::edit_to_do_item::EditToDoItem;
+use crate::json_serialization::to_do_item::ToDoItem;
 
-pub async fn edit(to_do_item: web::Json<ToDoItem>, request: HttpRequest) -> HttpResponse {
-    let uuid: Uuid;
-    match parse_uuid_from_request(request) {
+pub async fn edit(to_do_item: web::Json<EditToDoItem>, request: HttpRequest) -> HttpResponse {
+    let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
-        Ok(valid_uuid) => uuid = valid_uuid,
-    }
+        Ok(valid_uuid) => valid_uuid,
+    };
 
     let title = String::from(&to_do_item.title);
     let description = String::from(&to_do_item.description);
@@ -29,13 +29,16 @@ pub async fn edit(to_do_item: web::Json<ToDoItem>, request: HttpRequest) -> Http
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
             "Updated task".to_string(),
-            json!(ToDoItem::new(item)).to_string(),
+            ToDoItem::new(item),
         )),
         None => {
-            return HttpResponse::InternalServerError().json(ResponseItem::new(
+            // Logging a bit
+            sentry::capture_message("Editing and lookup of changed item failed!", Level::Error);
+
+            HttpResponse::InternalServerError().json(ResponseItem::new(
                 ResponseStatus::Error,
                 "Error during task update".to_string(),
-                json!(to_do_item).to_string(),
+                to_do_item,
             ))
         }
     }

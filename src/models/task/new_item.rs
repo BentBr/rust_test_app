@@ -4,7 +4,7 @@ use crate::to_do::enums::TaskStatus;
 use diesel::RunQueryDsl;
 use uuid::Uuid;
 
-#[derive(Insertable)]
+#[derive(Insertable, Debug)]
 #[diesel(table_name = to_do)]
 pub struct NewTask {
     pub uuid: Uuid,
@@ -28,7 +28,15 @@ pub fn create_item(uuid: Uuid, title: String, description: String) {
     let mut connection = establish_connection();
 
     let new_item = NewTask::new(uuid, title, description);
-    let _ = diesel::insert_into(to_do::table)
+
+    // Verbosity for console
+    println!("The new item: {:?}", &new_item);
+
+    let exec = diesel::insert_into(to_do::table)
         .values(&new_item)
         .execute(&mut connection);
+
+    if let Err(error) = exec {
+        sentry::capture_error(&error);
+    }
 }

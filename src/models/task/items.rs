@@ -5,21 +5,18 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 
 pub fn fetch_items(count: Option<i64>) -> Vec<Task> {
     let mut connection = establish_connection();
-    let limit: i64;
 
     // Loading it from DB
-    match count {
-        Some(count) => {
-            limit = count;
-        }
-        None => {
-            limit = 100;
-        }
-    }
+    let limit: i64 = count.unwrap_or(100);
 
-    to_do::table
+    let tasks = to_do::table
         .limit(limit)
         .order(to_do::columns::id.asc())
         .load::<Task>(&mut connection)
-        .unwrap()
+        .unwrap();
+
+    // Verbosity for console
+    println!("Fetched items: {}", &tasks.len());
+
+    tasks
 }

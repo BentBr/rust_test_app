@@ -4,15 +4,16 @@ import {useRoute} from 'vue-router';
 import {toDoItemStore} from '../stores/ToDoItem';
 import UpdateButton from "./UpdateButton.vue";
 import DeleteButton from "./DeleteButton.vue";
+import UpdateToDoItem from "./UpdateButton.vue";
 
 const route = useRoute();
-const title = ref(route.params.title); // Access the title parameter from the route
+const uuid = ref(route.params.uuid); // Access the uuid parameter from the route
 
 const itemStore = toDoItemStore();
 
 onMounted(async () => {
     // Use the title to fetch data from the store
-    await itemStore.get(title.value);
+    await itemStore.get(uuid.value);
 });
 </script>
 
@@ -21,10 +22,11 @@ onMounted(async () => {
         <div class="actions">
             Actions:
 
-            <UpdateButton :title="itemStore.title" :status="itemStore.status"></UpdateButton>
+            <UpdateToDoItem :uuid="itemStore.uuid" :title="itemStore.title" :description="itemStore.description" :status="itemStore.status"></UpdateToDoItem>
+
 
             <div v-if="itemStore.status === 'Done'">
-                <DeleteButton :title="itemStore.title" :deleted="false"></DeleteButton>
+                <DeleteButton :uuid="itemStore.uuid" :deleted="false"></DeleteButton>
             </div>
         </div>
     </div>
@@ -33,9 +35,10 @@ onMounted(async () => {
         <hr>
 
         <div class="content">
-            <p><strong>This is your title: </strong>{{ itemStore.title }}</p>
-            <p><strong>Status: </strong>{{ itemStore.status }}</p>
-            <p><strong>Creation date: </strong>{{ itemStore.creationDate }}</p>
+            <p><strong>{{ itemStore.title }}</strong></p>
+            <p>{{ itemStore.description }}</p>
+            <p><span class="light">Status: </span>{{ itemStore.status }}</p>
+            <p><span class="light">Creation date: </span>{{ itemStore.creationDate }}</p>
         </div>
     </div>
 </template>

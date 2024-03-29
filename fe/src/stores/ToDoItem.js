@@ -8,20 +8,23 @@ export const toDoItemStore = defineStore('itemStore', () => {
     let creationDate = ref('')
     let status = ref('')
 
+    function updateFullData(data) {
+        title.value = data.title
+        description.value = data.description
+        uuid.value = data.uuid
+        creationDate.value = data.creation_date
+        status.value = data.status
+    }
+
     async function get(uuid) {
-        console.log(title + 'in store we are');
         const item = await fetch("http://localhost:9095/v1/task/get/" + uuid).then(res => res.json());
 
-        this.title = item.title
-        this.description = item.description
-        this.uuid = item.uuid
-        this.creationDate = item.creation_date
-        this.status = item.status
+        updateFullData(item.data)
     }
 
     async function create(title, description) {
         const item = await fetch(
-            "http://localhost:9095/v1/task/create/",
+            "http://localhost:9095/v1/task/create",
             {
                 method: "POST",
                 headers: {
@@ -34,11 +37,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
             }
         ).then(res => res.json());
 
-        this.title = item.title
-        this.description = item.description
-        this.uuid = item.uuid
-        this.creationDate = item.creation_date
-        this.status = item.status
+        updateFullData(item.data)
     }
 
     async function remove(uuid) {
@@ -49,18 +48,18 @@ export const toDoItemStore = defineStore('itemStore', () => {
             }
         ).then(res => res.json());
 
-        this.title = ref('')
-        this.description = ref('')
-        this.uuid = ref('')
-        this.creationDate = ref('')
-        this.status = ref('')
+        title.value = ''
+        description.value = ''
+        uuid.value = ''
+        creationDate.value = ''
+        status.value = ''
     }
 
     async function edit(uuid, title, description, status) {
         const item = await fetch(
             "http://localhost:9095/v1/task/edit/" + uuid,
             {
-                method: "POST",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -73,10 +72,10 @@ export const toDoItemStore = defineStore('itemStore', () => {
             }
         ).then(res => res.json());
 
-        this.title = item.title
-        this.description = item.description
-        this.creationDate = item.creation_date
-        this.status = item.status
+        title.value = item.data.title
+        description.value = item.data.description
+        creationDate.value = item.data.creation_date
+        status.value = item.data.status
     }
 
     return {

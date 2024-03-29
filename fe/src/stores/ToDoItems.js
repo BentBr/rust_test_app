@@ -10,10 +10,10 @@ export const toDoItemsStore = defineStore('itemsStore', () => {
     async function update() {
         const items = await fetch("http://localhost:9095/v1/task/get").then(res => res.json());
 
-        this.openItems = items.open_items
-        this.doneItems = items.done_items
-        this.openItemsCount = items.open_items_count
-        this.doneItemsCount = items.done_items_count
+        this.openItems = items.data.open_items
+        this.doneItems = items.data.done_items
+        this.openItemsCount = items.data.open_items_count
+        this.doneItemsCount = items.data.done_items_count
     }
 
     return {

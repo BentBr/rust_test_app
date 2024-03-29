@@ -2,13 +2,13 @@
 import {toDoItemStore} from '../stores/ToDoItem';
 
 const itemStore = toDoItemStore();
-const props = defineProps(["title"]);
+const props = defineProps(["uuid", "title"]);
 
 </script>
 
 <template>
     <div>
-        <a :href="'/todos/' + props.title">{{ props.title }}</a>
+        <a :title="props.title" :href="'/todos/' + props.uuid">{{ props.title }}</a>
     </div>
 </template>
 

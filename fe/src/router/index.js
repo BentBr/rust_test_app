@@ -23,7 +23,7 @@ const router = createRouter({
             component: () => import('../views/ToDoItemsView.vue')
         },
         {
-            path: '/todos/:title',
+            path: '/todos/:uuid',
             name: 'ToDo Details',
             component: () => import('../views/ToDoItemView.vue')
         }

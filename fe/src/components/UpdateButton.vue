@@ -3,7 +3,7 @@ import {ref, watch} from 'vue';
 import {toDoItemStore} from '../stores/ToDoItem';
 
 const itemStore = toDoItemStore();
-const props = defineProps(["title", "status"]);
+const props = defineProps(["uuid", "title", "description", "status"]);
 const status = ref(props.status)
 
 watch(() => props.status, (newStatus) => {
@@ -11,7 +11,7 @@ watch(() => props.status, (newStatus) => {
 });
 
 const handleUpdate = async () => {
-    await itemStore.edit(props.title);
+    await itemStore.edit(props.uuid, props.title, props.description, props.status);
     status.value = itemStore.status;
 };
 

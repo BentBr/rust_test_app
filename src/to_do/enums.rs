@@ -77,7 +77,7 @@ impl ToSql<Status, Pg> for TaskStatus {
             TaskStatus::InProgress => out.write_all(b"In Progress"),
         }
         .unwrap_or_else(|_| panic!("Invalid status: {}", self));
-        Ok(IsNull::Yes)
+        Ok(IsNull::No)
     }
 }
 

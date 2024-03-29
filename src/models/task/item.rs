@@ -3,6 +3,7 @@ use crate::schema::to_do;
 use crate::to_do::enums::TaskStatus;
 use chrono::NaiveDateTime;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use sentry::Level;
 use uuid::Uuid;
 
 #[derive(Queryable, Identifiable, Debug, Clone)]
@@ -22,11 +23,16 @@ pub fn fetch_item(uuid: Uuid) -> Vec<Task> {
     let mut connection = establish_connection();
 
     // Loading it from DB
-    to_do::table
+    let task = to_do::table
         .filter(to_do::columns::uuid.eq(uuid))
         .order(to_do::columns::id.asc())
         .load::<Task>(&mut connection)
-        .unwrap()
+        .unwrap();
+
+    // Verbosity for console
+    println!("Fetched item: {}", &task.len());
+
+    task
 }
 
 pub fn delete_item(uuid: Uuid) {
@@ -36,14 +42,22 @@ pub fn delete_item(uuid: Uuid) {
     match item.first() {
         Some(item) => {
             match diesel::delete(item).execute(&mut connection) {
-                Ok(_) => {}
+                Ok(_) => {
+                    // Verbosity for console
+                    println!("Deleted item: {}", uuid);
+                }
                 Err(error) => {
-                    panic!("Could not delete: {}", error.to_string())
+                    // Logging a bit
+                    sentry::capture_error(&error);
                 }
             };
         }
         None => {
-            panic!("Cannot delete item: not found during deletion!");
+            // Logging a bit
+            sentry::capture_message(
+                "Cannot delete item: not found during deletion!",
+                Level::Error,
+            );
         }
     }
 }
@@ -51,18 +65,28 @@ pub fn delete_item(uuid: Uuid) {
 pub fn edit_item(uuid: Uuid, title: String, description: String, status: TaskStatus) {
     let mut connection = establish_connection();
 
+    // Verbosity for console
+    println!(
+        "Updating item: {}, {}, {}, {}",
+        uuid, title, description, status
+    );
+
     let results = to_do::table.filter(to_do::columns::uuid.eq(&uuid));
-    let _ = diesel::update(results)
+    let exec = diesel::update(results)
         .set((
             to_do::columns::title.eq(title),
             to_do::columns::description.eq(description),
             to_do::columns::status.eq(status),
         ))
         .execute(&mut connection);
+
+    if let Err(error) = exec {
+        sentry::capture_error(&error);
+    }
 }
 
-pub fn in_progress_item(uuid: Uuid) {}
+pub fn _in_progress_item(_uuid: Uuid) {}
 
-pub fn done_item(uuid: Uuid) {}
+pub fn _done_item(_uuid: Uuid) {}
 
-pub fn open_item(uuid: Uuid) {}
+pub fn _open_item(_uuid: Uuid) {}

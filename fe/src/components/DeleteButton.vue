@@ -3,7 +3,7 @@ import {ref, watch} from 'vue';
 import {toDoItemStore} from '../stores/ToDoItem';
 
 const itemStore = toDoItemStore();
-const props = defineProps(["title", "deleted"]);
+const props = defineProps(["uuid", "deleted"]);
 const deleted = ref(props.deleted)
 
 watch(() => props.deleted, (newDeleted) => {
@@ -11,7 +11,7 @@ watch(() => props.deleted, (newDeleted) => {
 });
 
 const handleDelete = async () => {
-    await itemStore.remove(props.title);
+    await itemStore.remove(props.uuid);
     deleted.value = true;
 };
 

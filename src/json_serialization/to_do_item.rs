@@ -1,5 +1,5 @@
+use crate::helpers::datetime::format_datetime;
 use crate::models::task::item::Task;
-use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
@@ -25,8 +25,4 @@ impl ToDoItem {
             deletion_date: format_datetime(input_item.deletion_date),
         }
     }
-}
-
-fn format_datetime(dt: Option<NaiveDateTime>) -> Option<String> {
-    dt.map(|datetime| datetime.to_string())
 }

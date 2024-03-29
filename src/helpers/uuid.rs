@@ -1,7 +1,6 @@
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use actix_web::{HttpRequest, HttpResponse};
-use std::str::FromStr;
 use uuid::Uuid;
 
 pub fn parse_uuid_from_request(request: HttpRequest) -> Result<Uuid, HttpResponse> {
@@ -20,10 +19,11 @@ pub fn parse_uuid_from_request(request: HttpRequest) -> Result<Uuid, HttpRespons
             )))
         }
     }
-    let uuid_result = Uuid::from_str(uuid_string);
+    println!("current: {}", &uuid_string);
+    let uuid_result = Uuid::parse_str(uuid_string);
 
     match uuid_result {
-        Err(error) => Err(HttpResponse::InternalServerError().json(ResponseItem::new(
+        Err(error) => Err(HttpResponse::BadRequest().json(ResponseItem::new(
             ResponseStatus::Error,
             "Uuid has an error".to_string(),
             error.to_string(),

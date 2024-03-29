@@ -8,11 +8,19 @@
     font-weight: normal;
 }
 
+strong {
+    font-weight: bold;
+}
+
 a,
 .green {
     text-decoration: none;
     color: hsla(160, 100%, 37%, 1);
     transition: 0.4s;
+}
+
+span.light {
+    font-weight: lighter;
 }
 
 @media (hover: hover) {

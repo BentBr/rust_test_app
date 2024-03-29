@@ -30,8 +30,8 @@ onMounted(async () => {
         <!-- list to do items -->
         <ul>
             <li v-for="item in itemsStore.openItems">
-                <ToDoItemLink :title="item.title"></ToDoItemLink>
-                <UpdateToDoItem :title="item.title" :status="item.status"></UpdateToDoItem>
+                <ToDoItemLink :uuid="item.uuid" :title="item.title"></ToDoItemLink>
+                <UpdateToDoItem :uuid="item.uuid" :title="item.title" :description="item.description" :status="item.status"></UpdateToDoItem>
             </li>
         </ul>
 
