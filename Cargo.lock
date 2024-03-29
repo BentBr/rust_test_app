@@ -4922,6 +4922,7 @@ dependencies = [
  "diesel",
  "dotenv",
  "futures",
+ "lazy_static",
  "sentry",
  "sentry-actix",
  "serde",

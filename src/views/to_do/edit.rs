@@ -1,3 +1,4 @@
+use crate::database::DB;
 use crate::helpers::uuid::parse_uuid_from_request;
 use crate::json_serialization::edit_to_do_item::EditToDoItem;
 use crate::json_serialization::response::response_item::ResponseItem;
@@ -9,7 +10,11 @@ use actix_web::{web, HttpRequest, HttpResponse};
 use sentry::Level;
 use uuid::Uuid;
 
-pub async fn edit(to_do_item: web::Json<EditToDoItem>, request: HttpRequest) -> HttpResponse {
+pub async fn edit(
+    to_do_item: web::Json<EditToDoItem>,
+    request: HttpRequest,
+    db: DB,
+) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
         Ok(valid_uuid) => valid_uuid,
@@ -20,7 +25,7 @@ pub async fn edit(to_do_item: web::Json<EditToDoItem>, request: HttpRequest) -> 
     let status = TaskStatus::from_string(to_do_item.status.clone());
 
     // Editing in DB
-    let item = edit_item(uuid, title, description, status);
+    let item = edit_item(uuid, title, description, status, db);
 
     match item.first() {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(

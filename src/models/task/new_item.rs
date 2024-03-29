@@ -1,4 +1,5 @@
-use crate::database::establish_connection;
+use crate::database::DB;
+use crate::models::task::item::{fetch_item, Task};
 use crate::models::task_status::item::TaskStatus;
 use crate::schema::to_do;
 use diesel::RunQueryDsl;
@@ -24,9 +25,7 @@ impl NewTask {
     }
 }
 
-pub fn create_item(uuid: Uuid, title: String, description: String) {
-    let mut connection = establish_connection();
-
+pub fn create_item(uuid: Uuid, title: String, description: String, mut db: DB) -> Vec<Task> {
     let new_item = NewTask::new(uuid, title, description);
 
     // Verbosity for console
@@ -34,9 +33,11 @@ pub fn create_item(uuid: Uuid, title: String, description: String) {
 
     let exec = diesel::insert_into(to_do::table)
         .values(&new_item)
-        .execute(&mut connection);
+        .execute(&mut db.connection);
 
     if let Err(error) = exec {
         sentry::capture_error(&error);
     }
+
+    fetch_item(uuid, db)
 }
