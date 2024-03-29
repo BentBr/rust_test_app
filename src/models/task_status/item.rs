@@ -74,7 +74,7 @@ impl ToSql<Status, Pg> for TaskStatus {
         match *self {
             TaskStatus::Done => out.write_all(b"Done"),
             TaskStatus::Open => out.write_all(b"Open"),
-            TaskStatus::InProgress => out.write_all(b"In Progress"),
+            TaskStatus::InProgress => out.write_all(b"In progress"),
         }
         .unwrap_or_else(|_| panic!("Invalid status: {}", self));
         Ok(IsNull::No)
@@ -86,7 +86,7 @@ impl FromSql<Status, Pg> for TaskStatus {
         match bytes.as_bytes() {
             b"Done" => Ok(TaskStatus::Done),
             b"Open" => Ok(TaskStatus::Open),
-            b"In Progress" => Ok(TaskStatus::InProgress),
+            b"In progress" => Ok(TaskStatus::InProgress),
             _ => Err("Unrecognized enum variant".into()),
         }
     }

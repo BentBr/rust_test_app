@@ -18,6 +18,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
 
     async function get(uuid) {
         const item = await fetch("http://localhost:9095/v1/task/get/" + uuid).then(res => res.json());
+        console.log(item)
 
         updateFullData(item.data)
     }
@@ -78,6 +79,15 @@ export const toDoItemStore = defineStore('itemStore', () => {
         status.value = item.data.status
     }
 
+    async function transition(uuid, status) {
+        const item = await fetch(
+            "http://localhost:9095/v1/task/transition/" + uuid + "/" + status.toLowerCase().replace(" ", "-"),
+            {
+                method: "PUT"
+            }
+        ).then(res => res.json());
+    }
+
     return {
         title,
         description,
@@ -87,6 +97,7 @@ export const toDoItemStore = defineStore('itemStore', () => {
         get,
         create,
         edit,
-        remove
+        remove,
+        transition
     }
 })

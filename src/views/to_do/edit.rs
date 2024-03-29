@@ -3,7 +3,7 @@ use crate::json_serialization::edit_to_do_item::EditToDoItem;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::json_serialization::to_do_item::ToDoItem;
-use crate::models::task::item::{edit_item, fetch_item};
+use crate::models::task::item::edit_item;
 use crate::models::task_status::item::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
 use sentry::Level;
@@ -20,10 +20,7 @@ pub async fn edit(to_do_item: web::Json<EditToDoItem>, request: HttpRequest) -> 
     let status = TaskStatus::from_string(to_do_item.status.clone());
 
     // Editing in DB
-    edit_item(uuid, title, description, status);
-
-    // Loading it again (the model with modification_date and other default values)
-    let item = fetch_item(uuid);
+    let item = edit_item(uuid, title, description, status);
 
     match item.first() {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(

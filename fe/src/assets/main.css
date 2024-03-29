@@ -23,6 +23,14 @@ span.light {
     font-weight: lighter;
 }
 
+.row {
+    overflow: hidden;
+}
+button {
+    .done, .open, .progress {
+        float: left;
+    }
+}
 @media (hover: hover) {
     a:hover {
         background-color: hsla(160, 100%, 37%, 0.2);

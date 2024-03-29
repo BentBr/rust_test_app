@@ -16,7 +16,7 @@ pub fn fetch_items(count: Option<i64>) -> Vec<Task> {
         .unwrap();
 
     // Verbosity for console
-    println!("Fetched items: {}", &tasks.len());
+    println!("Fetched items '{}'", &tasks.len());
 
     tasks
 }

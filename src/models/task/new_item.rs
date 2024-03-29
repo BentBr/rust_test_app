@@ -30,7 +30,7 @@ pub fn create_item(uuid: Uuid, title: String, description: String) {
     let new_item = NewTask::new(uuid, title, description);
 
     // Verbosity for console
-    println!("The new item: {:?}", &new_item);
+    println!("Created new item: {:?}", &new_item);
 
     let exec = diesel::insert_into(to_do::table)
         .values(&new_item)

@@ -19,7 +19,7 @@ pub fn parse_uuid_from_request(request: HttpRequest) -> Result<Uuid, HttpRespons
             )))
         }
     }
-    println!("current: {}", &uuid_string);
+
     let uuid_result = Uuid::parse_str(uuid_string);
 
     match uuid_result {

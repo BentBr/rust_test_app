@@ -30,7 +30,7 @@ pub fn fetch_item(uuid: Uuid) -> Vec<Task> {
         .unwrap();
 
     // Verbosity for console
-    println!("Fetched item: {}", &task.len());
+    println!("Fetched item '{}'", uuid);
 
     task
 }
@@ -44,7 +44,7 @@ pub fn delete_item(uuid: Uuid) {
             match diesel::delete(item).execute(&mut connection) {
                 Ok(_) => {
                     // Verbosity for console
-                    println!("Deleted item: {}", uuid);
+                    println!("Deleted item '{}'", uuid);
                 }
                 Err(error) => {
                     // Logging a bit
@@ -62,12 +62,12 @@ pub fn delete_item(uuid: Uuid) {
     }
 }
 
-pub fn edit_item(uuid: Uuid, title: String, description: String, status: TaskStatus) {
+pub fn edit_item(uuid: Uuid, title: String, description: String, status: TaskStatus) -> Vec<Task> {
     let mut connection = establish_connection();
 
     // Verbosity for console
     println!(
-        "Updating item: {}, {}, {}, {}",
+        "Updating item '{}' with data: {}, {}, {}",
         uuid, title, description, status
     );
 
@@ -83,10 +83,39 @@ pub fn edit_item(uuid: Uuid, title: String, description: String, status: TaskSta
     if let Err(error) = exec {
         sentry::capture_error(&error);
     }
+
+    fetch_item(uuid)
 }
 
-pub fn _in_progress_item(_uuid: Uuid) {}
+pub fn in_progress_item(uuid: Uuid) -> Vec<Task> {
+    let status = TaskStatus::InProgress;
+    transition(uuid, status)
+}
 
-pub fn _done_item(_uuid: Uuid) {}
+pub fn done_item(uuid: Uuid) -> Vec<Task> {
+    let status = TaskStatus::Done;
+    transition(uuid, status)
+}
 
-pub fn _open_item(_uuid: Uuid) {}
+pub fn open_item(uuid: Uuid) -> Vec<Task> {
+    let status = TaskStatus::Open;
+    transition(uuid, status)
+}
+
+fn transition(uuid: Uuid, status: TaskStatus) -> Vec<Task> {
+    let mut connection = establish_connection();
+
+    // Verbosity for console
+    println!("Transitioning item '{}' to '{}'", uuid, status);
+
+    let results = to_do::table.filter(to_do::columns::uuid.eq(&uuid));
+    let exec = diesel::update(results)
+        .set(to_do::columns::status.eq(status))
+        .execute(&mut connection);
+
+    if let Err(error) = exec {
+        sentry::capture_error(&error);
+    }
+
+    fetch_item(uuid)
+}
