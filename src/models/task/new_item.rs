@@ -12,21 +12,29 @@ pub struct NewTask {
     pub title: String,
     pub description: String,
     pub status: TaskStatus,
+    pub user_id: i32,
 }
 
 impl NewTask {
-    pub fn new(uuid: Uuid, title: String, description: String) -> NewTask {
+    pub fn new(uuid: Uuid, title: String, description: String, user_id: i32) -> NewTask {
         NewTask {
             uuid,
             title,
             description,
             status: TaskStatus::Open,
+            user_id,
         }
     }
 }
 
-pub fn create_item(uuid: Uuid, title: String, description: String, mut db: DB) -> Vec<Task> {
-    let new_item = NewTask::new(uuid, title, description);
+pub fn create_item(
+    uuid: Uuid,
+    title: String,
+    description: String,
+    user_id: i32,
+    mut db: DB,
+) -> Vec<Task> {
+    let new_item = NewTask::new(uuid, title, description, user_id);
 
     // Verbosity for console
     println!("Created new item: {:?}", &new_item);

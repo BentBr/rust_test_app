@@ -13,9 +13,10 @@ pub async fn create(new_to_do_item: web::Json<NewToDoItem>, db: DB) -> HttpRespo
     let uuid = Uuid::new_v4();
     let title = String::from(&new_to_do_item.title);
     let description = String::from(&new_to_do_item.description);
+    let user_id = new_to_do_item.user_id;
 
     // Creating in DB
-    let item = create_item(uuid, title, description, db);
+    let item = create_item(uuid, title, description, user_id, db);
 
     match item.first() {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
