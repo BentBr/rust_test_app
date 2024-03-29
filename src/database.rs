@@ -18,11 +18,24 @@ pub struct DbConnection {
 lazy_static! {
     pub static ref DBCONNECTION: DbConnection = {
         dotenv().ok();
-        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env");
+        let database_url =
+            env::var("DATABASE_URL").expect("DATABASE_URL must be set in environment");
+        let max_database_connections = env::var("MAX_DATABASE_CONNECTIONS")
+            .expect("MAX_DATABASE_CONNECTIONS must be set in environment as unsigned int")
+            .to_string();
+        let int = max_database_connections.clone().parse::<u32>();
+
+        let valid_int: u32 = match int {
+            Err(error) => panic!(
+                "Cannot parse MAX_DATABASE_CONNECTIONS environment var to int! {}",
+                error
+            ),
+            Ok(int) => int,
+        };
 
         DbConnection {
             db_connection: PgPool::builder()
-                .max_size(8)
+                .max_size(valid_int)
                 .build(ConnectionManager::new(database_url))
                 .expect("failed to create db connection_pool"),
         }
