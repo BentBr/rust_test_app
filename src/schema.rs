@@ -19,5 +19,29 @@ diesel::table! {
         creation_date -> Timestamp,
         modification_date -> Nullable<Timestamp>,
         deletion_date -> Nullable<Timestamp>,
+        user_id -> Int4,
     }
 }
+
+diesel::table! {
+    users (id) {
+        id -> Int4,
+        uuid -> Uuid,
+        username -> Varchar,
+        salutation -> Varchar,
+        first_name -> Varchar,
+        last_name -> Varchar,
+        email -> Varchar,
+        password -> Varchar,
+        creation_date -> Timestamp,
+        modification_date -> Nullable<Timestamp>,
+        deletion_date -> Nullable<Timestamp>,
+    }
+}
+
+diesel::joinable!(to_do -> users (user_id));
+
+diesel::allow_tables_to_appear_in_same_query!(
+    to_do,
+    users,
+);
