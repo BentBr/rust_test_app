@@ -1,11 +1,13 @@
 use crate::database::DB;
 use crate::models::task_status::item::TaskStatus;
+use crate::models::user::item::User;
 use crate::schema::to_do;
 use chrono::NaiveDateTime;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use uuid::Uuid;
 
-#[derive(Queryable, Identifiable, Debug, Clone)]
+#[derive(Queryable, Identifiable, Debug, Clone, Associations)]
+#[diesel(belongs_to(User))]
 #[diesel(table_name = to_do)]
 pub struct Task {
     pub id: i32,
@@ -16,6 +18,7 @@ pub struct Task {
     pub creation_date: NaiveDateTime,
     pub modification_date: Option<NaiveDateTime>,
     pub deletion_date: Option<NaiveDateTime>,
+    pub user_id: i32,
 }
 
 pub fn fetch_item(uuid: Uuid, mut db: DB) -> Vec<Task> {
