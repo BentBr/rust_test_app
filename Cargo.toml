@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 repository = "https://github.com/BentBr/rust_test_app"
 readme = "README.md"
-categories = ["web app", "async actix server"]
-keywords = ["web", "test", "rust", "playground"]
+categories = ["web-programming", "web-programming::http-client", "web-programming::http-server", "gui"]
+keywords = ["web", "Todo-List", "rust", "playground", "vue3"]
 license = "GPL-3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
