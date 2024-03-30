@@ -12,11 +12,16 @@ pub async fn delete(request: HttpRequest, db: DB) -> HttpResponse {
         Ok(valid_uuid) => valid_uuid,
     };
 
-    delete_item(uuid, db);
-
-    HttpResponse::Ok().json(ResponseItem::new(
-        ResponseStatus::Success,
-        "Deleted user".to_string(),
-        "Done with success",
-    ))
+    match delete_item(uuid, db) {
+        Some(uuid) => HttpResponse::Ok().json(ResponseItem::new(
+            ResponseStatus::Success,
+            "Deleted user".to_string(),
+            format!("Done with success: {}", uuid),
+        )),
+        None => HttpResponse::NotFound().json(ResponseItem::new(
+            ResponseStatus::Error,
+            "Could not delete".to_string(),
+            "Not found",
+        )),
+    }
 }

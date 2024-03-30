@@ -49,19 +49,27 @@ pub fn fetch_item(uuid: Uuid, mut db: DB) -> Vec<User> {
     user
 }
 
-pub fn delete_item(uuid: Uuid, mut db: DB) {
+pub fn delete_item(uuid: Uuid, mut db: DB) -> Option<Uuid> {
     match diesel::delete(users::table.filter(users::columns::uuid.eq(uuid)))
         .execute(&mut db.connection)
     {
-        Ok(_) => {
+        Ok(exec) => {
             // Verbosity for console
-            println!("Deleted user '{}'", uuid);
+            if exec > 0 {
+                println!("Deleted user '{}'", uuid);
+                return Some(uuid);
+            }
+
+            println!("User not found for deletion '{}'", uuid);
+            None
         }
         Err(error) => {
             // Logging a bit
             sentry::capture_error(&error);
+
+            None
         }
-    };
+    }
 }
 
 pub fn edit_item(
