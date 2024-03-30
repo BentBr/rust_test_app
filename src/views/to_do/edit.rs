@@ -24,8 +24,19 @@ pub async fn edit(
     let description = String::from(&to_do_item.description);
     let status = TaskStatus::from_string(to_do_item.status.clone());
 
+    let valid_status = match status {
+        Some(status) => status,
+        None => {
+            return HttpResponse::UnprocessableEntity().json(ResponseItem::new(
+                ResponseStatus::Error,
+                "Status error".to_string(),
+                format!("Status '{}' is not valid!", &to_do_item.status),
+            ))
+        }
+    };
+
     // Editing in DB
-    let item = edit_item(uuid, title, description, status, db);
+    let item = edit_item(uuid, title, description, valid_status, db);
 
     match item.first() {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
@@ -37,9 +48,9 @@ pub async fn edit(
             // Logging a bit
             sentry::capture_message("Editing and lookup of changed task failed!", Level::Error);
 
-            HttpResponse::InternalServerError().json(ResponseItem::new(
+            HttpResponse::NotFound().json(ResponseItem::new(
                 ResponseStatus::Error,
-                "Error during task update".to_string(),
+                "Task not found for".to_string(),
                 to_do_item,
             ))
         }

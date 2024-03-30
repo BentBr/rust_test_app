@@ -39,9 +39,9 @@ pub async fn edit(
             // Logging a bit
             sentry::capture_message("Editing and lookup of changed user failed!", Level::Error);
 
-            HttpResponse::InternalServerError().json(ResponseItem::new(
+            HttpResponse::NotFound().json(ResponseItem::new(
                 ResponseStatus::Error,
-                "Error during user update".to_string(),
+                "User not found for".to_string(),
                 user_item,
             ))
         }

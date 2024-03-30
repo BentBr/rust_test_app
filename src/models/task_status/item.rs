@@ -5,6 +5,7 @@ use diesel::pg::{Pg, PgValue};
 use diesel::serialize;
 use diesel::serialize::IsNull;
 use diesel::serialize::{Output, ToSql};
+use sentry::Level;
 use serde::ser::{Serialize, Serializer};
 use std::cmp::Eq;
 use std::fmt;
@@ -27,12 +28,18 @@ impl TaskStatus {
         }
     }
 
-    pub fn from_string(input_string: String) -> Self {
+    pub fn from_string(input_string: String) -> Option<Self> {
         match input_string.as_str() {
-            "Done" => Self::Done,
-            "Open" => Self::Open,
-            "In Progress" => Self::InProgress,
-            _ => panic!("input '{}' not supported as at valid status", input_string),
+            "Done" => Some(Self::Done),
+            "Open" => Some(Self::Open),
+            "In Progress" => Some(Self::InProgress),
+            _ => {
+                sentry::capture_message(
+                    format!("input '{}' not supported as at valid status", input_string).as_str(),
+                    Level::Error,
+                );
+                None
+            }
         }
     }
 }

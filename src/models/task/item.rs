@@ -35,19 +35,27 @@ pub fn fetch_item(uuid: Uuid, mut db: DB) -> Vec<Task> {
     task
 }
 
-pub fn delete_item(uuid: Uuid, mut db: DB) {
+pub fn delete_item(uuid: Uuid, mut db: DB) -> Option<Uuid> {
     match diesel::delete(to_do::table.filter(to_do::columns::uuid.eq(uuid)))
         .execute(&mut db.connection)
     {
-        Ok(_) => {
+        Ok(exec) => {
             // Verbosity for console
-            println!("Deleted task '{}'", uuid);
+            if exec > 0 {
+                println!("Deleted task '{}'", uuid);
+                return Some(uuid);
+            }
+
+            println!("Task not found for deletion '{}'", uuid);
+            None
         }
         Err(error) => {
             // Logging a bit
             sentry::capture_error(&error);
+
+            None
         }
-    };
+    }
 }
 
 pub fn edit_item(
