@@ -5,7 +5,8 @@ mod get;
 mod get_one;
 mod transition;
 
-use actix_web::web::{delete, get, patch, post, put, scope, ServiceConfig};
+use crate::views::handlers::not_found_handler::not_found;
+use actix_web::web::{delete, get, patch, post, put, route, scope, ServiceConfig};
 
 pub fn to_do_views_factory(app: &mut ServiceConfig) {
     app.service(
@@ -20,6 +21,7 @@ pub fn to_do_views_factory(app: &mut ServiceConfig) {
                 "transition/{uuid}/in-progress",
                 put().to(transition::in_progress),
             )
-            .route("transition/{uuid}/done", put().to(transition::done)),
+            .route("transition/{uuid}/done", put().to(transition::done))
+            .default_service(route().to(not_found)),
     );
 }

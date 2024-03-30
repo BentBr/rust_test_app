@@ -1,4 +1,5 @@
-use actix_web::web::{delete, get, patch, post, scope, ServiceConfig};
+use crate::views::handlers::not_found_handler::not_found;
+use actix_web::web::{delete, get, patch, post, route, scope, ServiceConfig};
 
 mod create;
 mod delete;
@@ -14,6 +15,7 @@ pub fn user_views_factory(app: &mut ServiceConfig) {
             .route("get", get().to(get::get))
             .route("edit/{uuid}", patch().to(edit::edit))
             .route("delete/{uuid}", delete().to(delete::delete))
-            .route("password/{uuid}", patch().to(edit::password)),
+            .route("password/{uuid}", patch().to(edit::password))
+            .default_service(route().to(not_found)),
     );
 }
