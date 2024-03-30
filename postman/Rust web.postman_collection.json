@@ -7,127 +7,140 @@
 	},
 	"item": [
 		{
-			"name": "create todo",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "user",
+			"item": []
+		},
+		{
+			"name": "task",
+			"item": [
+				{
+					"name": "create todo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"newt title\",\n    \"description\": \"-\",\n    \"user_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/{{task-api}}/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{task-api}}",
+								"create"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/{{item-api}}/create/new mannn3 drölf",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{item-api}}",
-						"create",
-						"new mannn3 drölf"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "edit todo",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"title\": \"new mannn3 drölf\",\n    \"status\": \"\",\n    \"creation_date\": \"\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "edit todo",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uuid\": \"19b43547-121c-44b8-ae83-18d9ded35fa3\",\n    \"title\": \"another test - updated\",\n    \"description\": \"hey how!!\\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n    \"status\": \"Open\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/{{task-api}}/edit/19b43547-121c-44b8-ae83-18d9dec35fa3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{task-api}}",
+								"edit",
+								"19b43547-121c-44b8-ae83-18d9dec35fa3"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/{{item-api}}/edit",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{item-api}}",
-						"edit"
-					]
+				{
+					"name": "get one todo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/{{task-api}}/get/19b43547-121c-44b8-ae83-18d9dec35fa3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{task-api}}",
+								"get",
+								"19b43547-121c-44b8-ae83-18d9dec35fa3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get todos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/{{task-api}}/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{task-api}}",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete one todo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/{{task-api}}/delete/bcaa90e4-4928-4211-8009-9853a680ca09",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{task-api}}",
+								"delete",
+								"bcaa90e4-4928-4211-8009-9853a680ca09"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "get todos",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/{{item-api}}/get",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{item-api}}",
-						"get"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get one todo",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{host}}/{{item-api}}/get/new mannn3 drölf",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{item-api}}",
-						"get",
-						"new mannn3 drölf"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete one todo",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{host}}/{{item-api}}/delete/neu man3",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{item-api}}",
-						"delete",
-						"neu man3"
-					]
-				}
-			},
-			"response": []
+			"name": "auth",
+			"item": []
 		},
 		{
 			"name": "home route",
