@@ -74,6 +74,13 @@ pub async fn password(
     };
 
     let new_password = String::from(&user_item.password);
+    if new_password.is_empty() {
+        return HttpResponse::UnprocessableEntity().json(ResponseItem::new(
+            ResponseStatus::Error,
+            "Password constraint".to_string(),
+            "Must not be empty",
+        ));
+    }
 
     // Editing in DB
     let item = update_password(uuid, new_password, db, db2);

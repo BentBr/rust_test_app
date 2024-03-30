@@ -18,6 +18,14 @@ pub async fn create(new_user_item: web::Json<NewUserItem>, db: DB) -> HttpRespon
         Ok(valid_uuid) => valid_uuid,
     };
 
+    if password.is_empty() {
+        return HttpResponse::UnprocessableEntity().json(ResponseItem::new(
+            ResponseStatus::Error,
+            "Password constraint".to_string(),
+            "Must not be empty",
+        ));
+    }
+
     // Creating in DB
     let item = create_item(username, valid_email, password, db);
 
