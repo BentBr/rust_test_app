@@ -8,7 +8,151 @@
 	"item": [
 		{
 			"name": "user",
-			"item": []
+			"item": [
+				{
+					"name": "auth",
+					"item": []
+				},
+				{
+					"name": "get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/{{user-api}}/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{user-api}}",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/{{user-api}}/get/b860706a-3739-4f2d-9fe1-aeb2445d50d0",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{user-api}}",
+								"get",
+								"b860706a-3739-4f2d-9fe1-aeb2445d50d0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/{{user-api}}/delete/1db23eeb-7492-4f3e-b03e-791716f19fdc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{user-api}}",
+								"delete",
+								"1db23eeb-7492-4f3e-b03e-791716f19fdc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uuid\": \"b860706a-3739-4f2d-9fe1-aeb2445d50d0\",\n    \"username\": \"tesi\",\n    \"salutation\": \"MRRRR\",\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\": \"placeholder email\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/{{user-api}}/edit/b860706a-3739-4f2d-9fe1-aeb2445d50d0",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{user-api}}",
+								"edit",
+								"b860706a-3739-4f2d-9fe1-aeb2445d50d0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uuid\": \"b860706a-3739-4f2d-9fe1-aeb2445d50d0\",\n    \"old_password\": \"uiaeaaa\",\n    \"new_password\": \"uiael\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/{{user-api}}/password/b860706a-3739-4f2d-9fe1-aeb2445d50d0",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{user-api}}",
+								"password",
+								"b860706a-3739-4f2d-9fe1-aeb2445d50d0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"tesi\",\n    \"email\": \"test@mail.de\",\n    \"password\": \"my pass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/{{user-api}}/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{user-api}}",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "task",
@@ -17,7 +161,7 @@
 					"name": "transition",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "in-progress",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -31,6 +175,46 @@
 										"transition",
 										"72655de0-21e6-40f0-9856-9530344bf78d",
 										"in-progress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "done",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/{{task-api}}/transition/72655de0-21e6-40f0-9856-9530344bf78d/done",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{task-api}}",
+										"transition",
+										"72655de0-21e6-40f0-9856-9530344bf78d",
+										"done"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "open",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/{{task-api}}/transition/72655de0-21e6-40f0-9856-9530344bf78d/open",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{task-api}}",
+										"transition",
+										"72655de0-21e6-40f0-9856-9530344bf78d",
+										"open"
 									]
 								}
 							},
@@ -162,10 +346,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "auth",
-			"item": []
 		},
 		{
 			"name": "home route",
