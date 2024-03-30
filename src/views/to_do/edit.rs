@@ -35,7 +35,7 @@ pub async fn edit(
         )),
         None => {
             // Logging a bit
-            sentry::capture_message("Editing and lookup of changed item failed!", Level::Error);
+            sentry::capture_message("Editing and lookup of changed task failed!", Level::Error);
 
             HttpResponse::InternalServerError().json(ResponseItem::new(
                 ResponseStatus::Error,

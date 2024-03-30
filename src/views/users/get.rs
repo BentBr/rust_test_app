@@ -1,8 +1,8 @@
 use crate::database::DB;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::to_do_items::ToDoItems;
-use crate::models::task::items::fetch_items;
+use crate::json_serialization::user_items::UserItems;
+use crate::models::user::items::fetch_items;
 use actix_web::HttpResponse;
 
 pub async fn get(db: DB) -> HttpResponse {
@@ -11,7 +11,7 @@ pub async fn get(db: DB) -> HttpResponse {
 
     HttpResponse::Ok().json(ResponseItem::new(
         ResponseStatus::Success,
-        format!("Fetched {} task items", items.len()),
-        ToDoItems::new(items),
+        format!("Fetched {} user items", items.len()),
+        UserItems::new(items),
     ))
 }

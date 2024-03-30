@@ -2,7 +2,6 @@ use crate::database::DB;
 use crate::json_serialization::new_to_do_item::NewToDoItem;
 use actix_web::{web, HttpResponse};
 use sentry::Level;
-use uuid::Uuid;
 
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
@@ -10,16 +9,15 @@ use crate::json_serialization::to_do_item::ToDoItem;
 use crate::models::task::new_item::create_item;
 
 pub async fn create(new_to_do_item: web::Json<NewToDoItem>, db: DB) -> HttpResponse {
-    let uuid = Uuid::new_v4();
     let title = String::from(&new_to_do_item.title);
     let description = String::from(&new_to_do_item.description);
     let user_id = new_to_do_item.user_id;
 
     // Creating in DB
-    let item = create_item(uuid, title, description, user_id, db);
+    let item = create_item(title, description, user_id, db);
 
     match item.first() {
-        Some(item) => HttpResponse::Ok().json(ResponseItem::new(
+        Some(item) => HttpResponse::Created().json(ResponseItem::new(
             ResponseStatus::Success,
             "Created new task".to_string(),
             ToDoItem::new(item),
@@ -30,7 +28,7 @@ pub async fn create(new_to_do_item: web::Json<NewToDoItem>, db: DB) -> HttpRespo
 
             HttpResponse::InternalServerError().json(ResponseItem::new(
                 ResponseStatus::Error,
-                "Error during item lookup after creation".to_string(),
+                "Error during task lookup and creation".to_string(),
                 new_to_do_item,
             ))
         }

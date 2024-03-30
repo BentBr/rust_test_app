@@ -27,17 +27,12 @@ impl NewTask {
     }
 }
 
-pub fn create_item(
-    uuid: Uuid,
-    title: String,
-    description: String,
-    user_id: i32,
-    mut db: DB,
-) -> Vec<Task> {
+pub fn create_item(title: String, description: String, user_id: i32, mut db: DB) -> Vec<Task> {
+    let uuid = Uuid::new_v4();
     let new_item = NewTask::new(uuid, title, description, user_id);
 
     // Verbosity for console
-    println!("Created new item: {:?}", &new_item);
+    println!("Created new task: {:?}", &new_item);
 
     let exec = diesel::insert_into(to_do::table)
         .values(&new_item)

@@ -30,7 +30,7 @@ pub fn fetch_item(uuid: Uuid, mut db: DB) -> Vec<Task> {
         .unwrap();
 
     // Verbosity for console
-    println!("Fetched item '{}'", uuid);
+    println!("Fetched task '{}'", uuid);
 
     task
 }
@@ -41,7 +41,7 @@ pub fn delete_item(uuid: Uuid, mut db: DB) {
     {
         Ok(_) => {
             // Verbosity for console
-            println!("Deleted item '{}'", uuid);
+            println!("Deleted task '{}'", uuid);
         }
         Err(error) => {
             // Logging a bit
@@ -59,7 +59,7 @@ pub fn edit_item(
 ) -> Vec<Task> {
     // Verbosity for console
     println!(
-        "Updating item '{}' with data: {}, {}, {}",
+        "Updating task '{}' with data: {}, {}, {}",
         uuid, title, description, status
     );
 
@@ -96,7 +96,7 @@ pub fn open_item(uuid: Uuid, db: DB) -> Vec<Task> {
 
 fn transition(uuid: Uuid, status: TaskStatus, mut db: DB) -> Vec<Task> {
     // Verbosity for console
-    println!("Transitioning item '{}' to '{}'", uuid, status);
+    println!("Transitioning task '{}' to '{}'", uuid, status);
 
     let results = to_do::table.filter(to_do::columns::uuid.eq(&uuid));
     let exec = diesel::update(results)
