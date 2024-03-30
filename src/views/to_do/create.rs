@@ -1,12 +1,11 @@
 use crate::database::DB;
-use crate::json_serialization::new_to_do_item::NewToDoItem;
-use actix_web::{web, HttpResponse};
-use sentry::Level;
-
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::to_do_item::ToDoItem;
+use crate::json_serialization::task::new_to_do_item::NewToDoItem;
+use crate::json_serialization::task::to_do_item::ToDoItem;
 use crate::models::task::new_item::create_item;
+use actix_web::{web, HttpResponse};
+use sentry::Level;
 
 pub async fn create(new_to_do_item: web::Json<NewToDoItem>, db: DB) -> HttpResponse {
     let title = String::from(&new_to_do_item.title);

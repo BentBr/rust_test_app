@@ -1,7 +1,7 @@
 use crate::database::DB;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::user_items::UserItems;
+use crate::json_serialization::user::user_items::UserItems;
 use crate::models::user::items::fetch_items;
 use actix_web::HttpResponse;
 

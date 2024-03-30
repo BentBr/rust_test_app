@@ -1,10 +1,3 @@
-pub mod edit_to_do_item;
-pub mod edit_user_item;
-pub mod new_to_do_item;
-pub mod new_user_item;
-pub mod password_user_item;
 pub mod response;
-pub mod to_do_item;
-pub mod to_do_items;
-pub mod user_item;
-pub mod user_items;
+pub mod task;
+pub mod user;

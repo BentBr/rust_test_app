@@ -2,7 +2,7 @@ use crate::database::DB;
 use crate::helpers::uuid::parse_uuid_from_request;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::to_do_item::ToDoItem;
+use crate::json_serialization::task::to_do_item::ToDoItem;
 use crate::models::task::item::fetch_item;
 use actix_web::{HttpRequest, HttpResponse};
 use uuid::Uuid;

@@ -1,8 +1,8 @@
 use crate::database::DB;
-use crate::json_serialization::new_user_item::NewUserItem;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::user_item::UserItem;
+use crate::json_serialization::user::new_user_item::NewUserItem;
+use crate::json_serialization::user::user_item::UserItem;
 use crate::models::user::new_item::create_item;
 use actix_web::{web, HttpResponse};
 use sentry::Level;

@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::to_do_item::ToDoItem;
+use crate::json_serialization::task::to_do_item::ToDoItem;
 use crate::models::task::item::{done_item, in_progress_item, open_item};
 use crate::models::task_status::item::TaskStatus;
 

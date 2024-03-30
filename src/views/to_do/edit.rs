@@ -1,9 +1,9 @@
 use crate::database::DB;
 use crate::helpers::uuid::parse_uuid_from_request;
-use crate::json_serialization::edit_to_do_item::EditToDoItem;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
-use crate::json_serialization::to_do_item::ToDoItem;
+use crate::json_serialization::task::edit_to_do_item::EditToDoItem;
+use crate::json_serialization::task::to_do_item::ToDoItem;
 use crate::models::task::item::edit_item;
 use crate::models::task_status::item::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
