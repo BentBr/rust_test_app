@@ -14,7 +14,7 @@ pub struct ToDoItem {
 }
 
 impl ToDoItem {
-    pub fn new(input_item: &Task) -> ToDoItem {
+    pub fn new(input_item: Task) -> ToDoItem {
         ToDoItem {
             uuid: input_item.uuid.to_string(),
             title: input_item.title.to_owned(),

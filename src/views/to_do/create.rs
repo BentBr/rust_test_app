@@ -19,7 +19,7 @@ pub async fn create(new_to_do_item: web::Json<NewToDoItem>, db: DB) -> HttpRespo
         Some(item) => HttpResponse::Created().json(ResponseItem::new(
             ResponseStatus::Success,
             "Created new task".to_string(),
-            ToDoItem::new(item),
+            ToDoItem::new(item.clone()),
         )),
         None => {
             // Logging a bit

@@ -8,7 +8,7 @@ pub struct PasswordUserItem {
 }
 
 impl PasswordUserItem {
-    pub fn new(input_item: &PasswordUser) -> PasswordUserItem {
+    pub fn new(input_item: PasswordUser) -> PasswordUserItem {
         PasswordUserItem {
             uuid: input_item.uuid.to_string(),
             password: input_item.password.to_owned(),

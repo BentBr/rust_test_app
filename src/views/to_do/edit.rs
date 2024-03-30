@@ -42,7 +42,7 @@ pub async fn edit(
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
             "Updated task".to_string(),
-            ToDoItem::new(item),
+            ToDoItem::new(item.clone()),
         )),
         None => {
             // Logging a bit

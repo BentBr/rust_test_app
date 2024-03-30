@@ -20,7 +20,7 @@ pub async fn get_one(request: HttpRequest, db: DB) -> HttpResponse {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
             "Fetched one task".to_string(),
-            ToDoItem::new(item),
+            ToDoItem::new(item.clone()),
         )),
         None => HttpResponse::NotFound().json(ResponseItem::new(
             ResponseStatus::Error,

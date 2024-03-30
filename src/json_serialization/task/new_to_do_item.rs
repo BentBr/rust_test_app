@@ -9,7 +9,7 @@ pub struct NewToDoItem {
 }
 
 impl NewToDoItem {
-    pub fn new(input_item: &Task) -> NewToDoItem {
+    pub fn new(input_item: Task) -> NewToDoItem {
         NewToDoItem {
             title: input_item.title.to_owned(),
             description: input_item.description.to_owned(),

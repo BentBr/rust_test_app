@@ -10,7 +10,7 @@ pub struct EditToDoItem {
 }
 
 impl EditToDoItem {
-    pub fn new(input_item: &Task) -> EditToDoItem {
+    pub fn new(input_item: Task) -> EditToDoItem {
         EditToDoItem {
             uuid: input_item.uuid.to_string(),
             title: input_item.title.to_owned(),

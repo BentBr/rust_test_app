@@ -14,7 +14,7 @@ impl UserItems {
         let mut user_array_buffer = Vec::new();
 
         for item in input_items {
-            let user_item = UserItem::new(&item);
+            let user_item = UserItem::new(item);
 
             user_array_buffer.push(user_item)
         }

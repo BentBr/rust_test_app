@@ -39,7 +39,7 @@ fn transition_into(request: HttpRequest, status: TaskStatus, db: DB) -> HttpResp
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
             format!("Transitioned task to '{}'", status),
-            ToDoItem::new(item),
+            ToDoItem::new(item.clone()),
         )),
         None => {
             // Logging a bit

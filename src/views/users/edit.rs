@@ -47,7 +47,7 @@ pub async fn edit(
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
             "Updated user".to_string(),
-            UserItem::new(item),
+            UserItem::new(item.clone()),
         )),
         None => {
             // Logging a bit
@@ -89,7 +89,7 @@ pub async fn password(
         Some(user) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
             "Updated user".to_string(),
-            UserItem::new(&user),
+            UserItem::new(user),
         )),
         None => HttpResponse::Conflict().json(ResponseItem::new(
             ResponseStatus::Error,

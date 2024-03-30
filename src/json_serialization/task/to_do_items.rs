@@ -20,9 +20,9 @@ impl ToDoItems {
         let mut in_progress_array_buffer = Vec::new();
 
         for item in input_items {
-            let to_do_item = ToDoItem::new(&item);
+            let to_do_item = ToDoItem::new(item.clone());
 
-            match &item.status {
+            match item.status {
                 TaskStatus::Open => open_array_buffer.push(to_do_item),
                 TaskStatus::Done => done_array_buffer.push(to_do_item),
                 TaskStatus::InProgress => in_progress_array_buffer.push(to_do_item),

@@ -33,7 +33,7 @@ pub async fn create(new_user_item: web::Json<NewUserItem>, db: DB) -> HttpRespon
         Some(item) => HttpResponse::Created().json(ResponseItem::new(
             ResponseStatus::Success,
             "Created new user".to_string(),
-            UserItem::new(item),
+            UserItem::new(item.clone()),
         )),
         None => {
             // Logging a bit

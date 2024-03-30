@@ -16,7 +16,7 @@ pub struct UserItem {
 }
 
 impl UserItem {
-    pub fn new(input_item: &User) -> UserItem {
+    pub fn new(input_item: User) -> UserItem {
         UserItem {
             uuid: input_item.uuid.to_string(),
             username: input_item.username.to_owned(),

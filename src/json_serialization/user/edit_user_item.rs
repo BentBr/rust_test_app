@@ -12,7 +12,7 @@ pub struct EditUserItem {
 }
 
 impl EditUserItem {
-    pub fn new(input_item: &User) -> EditUserItem {
+    pub fn new(input_item: User) -> EditUserItem {
         EditUserItem {
             uuid: input_item.uuid.to_string(),
             username: input_item.username.to_owned(),

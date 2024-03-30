@@ -9,7 +9,7 @@ pub struct NewUserItem {
 }
 
 impl NewUserItem {
-    pub fn new(input_item: &User) -> NewUserItem {
+    pub fn new(input_item: User) -> NewUserItem {
         NewUserItem {
             username: input_item.username.to_owned(),
             email: input_item.email.to_owned(),
