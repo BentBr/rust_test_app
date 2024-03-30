@@ -14,6 +14,31 @@
 			"name": "task",
 			"item": [
 				{
+					"name": "transition",
+					"item": [
+						{
+							"name": "New Request",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/{{task-api}}/transition/72655de0-21e6-40f0-9856-9530344bf78d/in-progress",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{task-api}}",
+										"transition",
+										"72655de0-21e6-40f0-9856-9530344bf78d",
+										"in-progress"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "create todo",
 					"request": {
 						"method": "POST",
@@ -80,14 +105,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{host}}/{{task-api}}/get/19b43547-121c-44b8-ae83-18d9dec35fa3",
+							"raw": "{{host}}/{{task-api}}/get/85979ec6-66c5-4ba4-9153-606f2e9e2f6a",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"{{task-api}}",
 								"get",
-								"19b43547-121c-44b8-ae83-18d9dec35fa3"
+								"85979ec6-66c5-4ba4-9153-606f2e9e2f6a"
 							]
 						}
 					},
@@ -148,12 +173,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/",
+					"raw": "{{host}}/uiae",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						""
+						"uiae"
 					]
 				}
 			},
