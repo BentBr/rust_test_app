@@ -9,6 +9,6 @@ CREATE TABLE users (
    password VARCHAR NOT NULL
 );
 
-INSERT INTO users (uuid, username, email, password) VALUES ('b860706a-3739-4f2d-9fe1-aeb2445d50d0', 'placeholder', 'placeholder email', 'placeholder password');
+INSERT INTO users (uuid, username, email, password) VALUES ('b860706a-3739-4f2d-9fe1-aeb2445d50d0', 'placeholder', 'placeholder@email.com', 'placeholder password');
 
 ALTER TABLE to_do ADD user_id integer default 1 CONSTRAINT user_id REFERENCES users NOT NULL;
