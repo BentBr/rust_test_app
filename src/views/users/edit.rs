@@ -73,22 +73,23 @@ pub async fn password(
         Ok(valid_uuid) => valid_uuid,
     };
 
-    let new_password = String::from(&user_item.password);
+    let old_password = String::from(&user_item.old_password);
+    let new_password = String::from(&user_item.new_password);
     if new_password.is_empty() {
         return HttpResponse::UnprocessableEntity().json(ResponseItem::new(
             ResponseStatus::Error,
             "Password constraint".to_string(),
-            "Must not be empty",
+            "New password must not be empty",
         ));
     }
 
     // Editing in DB
-    let item = update_password(uuid, new_password, db, db2);
+    let item = update_password(uuid, old_password, new_password, db, db2);
 
     match item {
         Some(user) => HttpResponse::Ok().json(ResponseItem::new(
             ResponseStatus::Success,
-            "Updated user".to_string(),
+            "Updated user password".to_string(),
             UserItem::new(user),
         )),
         None => HttpResponse::Conflict().json(ResponseItem::new(

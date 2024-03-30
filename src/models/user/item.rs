@@ -97,15 +97,30 @@ pub fn edit_item(
     fetch_item(uuid, db)
 }
 
-pub fn update_password(uuid: Uuid, password: String, db: DB, mut db2: DB) -> Option<User> {
+pub fn update_password(
+    uuid: Uuid,
+    old_password: String,
+    new_password: String,
+    db: DB,
+    mut db2: DB,
+) -> Option<User> {
     // Verbosity for console
     println!("Updating password for user '{}'", uuid);
 
     // Fetch the user to verify existence
     let user = fetch_item(uuid, db);
     if let Some(user) = user.first() {
+        // Check if old password fits
+        if !user.verify(old_password) {
+            println!(
+                "Failed updating password for user '{}' (wrong password)",
+                uuid
+            );
+            return None;
+        }
+
         // Hash the new password
-        let hashed_password = match hash(password.as_str(), DEFAULT_COST) {
+        let hashed_password = match hash(new_password.as_str(), DEFAULT_COST) {
             Ok(hash) => hash,
             Err(error) => {
                 sentry::capture_error(&error);
