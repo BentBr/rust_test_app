@@ -5,8 +5,9 @@ mod get;
 mod get_one;
 mod transition;
 
+use crate::views::handlers::json_handler::json_error_handler;
 use crate::views::handlers::not_found_handler::not_found;
-use actix_web::web::{delete, get, patch, post, put, route, scope, ServiceConfig};
+use actix_web::web::{delete, get, patch, post, put, route, scope, JsonConfig, ServiceConfig};
 
 pub fn to_do_views_factory(app: &mut ServiceConfig) {
     app.service(
@@ -22,6 +23,7 @@ pub fn to_do_views_factory(app: &mut ServiceConfig) {
                 put().to(transition::in_progress),
             )
             .route("transition/{uuid}/done", put().to(transition::done))
-            .default_service(route().to(not_found)),
+            .default_service(route().to(not_found))
+            .app_data(JsonConfig::default().error_handler(json_error_handler)),
     );
 }
