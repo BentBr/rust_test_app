@@ -1,4 +1,5 @@
 use crate::database::DB;
+use crate::helpers::email::parse_email_from_string;
 use crate::helpers::uuid::parse_uuid_from_request;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
@@ -26,8 +27,21 @@ pub async fn edit(
     let first_name = String::from(&user_item.first_name);
     let last_name = String::from(&user_item.last_name);
 
+    let valid_email: String = match parse_email_from_string(email) {
+        Err(response) => return response,
+        Ok(valid_uuid) => valid_uuid,
+    };
+
     // Editing in DB
-    let item = edit_item(uuid, username, email, salutation, first_name, last_name, db);
+    let item = edit_item(
+        uuid,
+        username,
+        valid_email,
+        salutation,
+        first_name,
+        last_name,
+        db,
+    );
 
     match item.first() {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(

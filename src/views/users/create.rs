@@ -1,4 +1,5 @@
 use crate::database::DB;
+use crate::helpers::email::parse_email_from_string;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::json_serialization::user::new_user_item::NewUserItem;
@@ -12,8 +13,13 @@ pub async fn create(new_user_item: web::Json<NewUserItem>, db: DB) -> HttpRespon
     let email = String::from(&new_user_item.email);
     let password = String::from(&new_user_item.password);
 
+    let valid_email: String = match parse_email_from_string(email) {
+        Err(response) => return response,
+        Ok(valid_uuid) => valid_uuid,
+    };
+
     // Creating in DB
-    let item = create_item(username, email, password, db);
+    let item = create_item(username, valid_email, password, db);
 
     match item.first() {
         Some(item) => HttpResponse::Created().json(ResponseItem::new(
