@@ -1,3 +1,4 @@
+mod counter;
 mod database;
 mod helpers;
 pub mod json_serialization;
@@ -8,6 +9,7 @@ mod views;
 
 #[macro_use]
 extern crate diesel;
+use crate::helpers::env::get_float_from_env;
 use actix_cors::Cors;
 use actix_service::Service;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
@@ -81,26 +83,14 @@ fn main() -> std::io::Result<()> {
 
 fn create_sentry() {
     let sentry_dsn: String = std::env::var("SENTRY_DSN").unwrap();
-
-    let sample_rate = std::env::var("SENTRY_SAMPLE_RATE")
-        .expect("SENTRY_SAMPLE_RATE must be set in environment as unsigned int")
-        .to_string();
-    let float = sample_rate.clone().parse::<f32>();
-
-    let valid_sentry_rate: f32 = match float {
-        Err(error) => panic!(
-            "Cannot parse SENTRY_SAMPLE_RATE environment var to float! {}",
-            error
-        ),
-        Ok(float) => float,
-    };
+    let sample_rate = get_float_from_env("SENTRY_SAMPLE_RATE".to_string());
 
     let _guard = sentry::init((
         sentry_dsn.as_str(),
         sentry::ClientOptions {
             release: sentry::release_name!(),
             // Placeholder for now - not yet enabled
-            traces_sample_rate: valid_sentry_rate,
+            traces_sample_rate: sample_rate,
             ..Default::default()
         },
     ));

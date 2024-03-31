@@ -1,3 +1,4 @@
+use crate::helpers::env::get_int_from_env;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use actix_web::dev::Payload;
@@ -110,16 +111,8 @@ impl ResponseError for UnauthorizedError {
 }
 
 fn get_session_lifetime() -> TimeDelta {
-    let session_lifetime = env::var("SESSION_LIFETIME")
-        .expect("SESSION_LIFETIME must be set in environment")
-        .to_string();
-    let lifetime_in_seconds = match session_lifetime.clone().parse::<i64>() {
-        Ok(time) => time,
-        Err(error) => {
-            panic!("Lifetime parsing failed! {}", error);
-        }
-    };
+    let lifetime_in_seconds = get_int_from_env("SESSION_LIFETIME".to_string());
 
-    Duration::try_seconds(lifetime_in_seconds)
+    Duration::try_seconds(lifetime_in_seconds as i64)
         .expect("Duration calculation failed for token expiring")
 }
