@@ -14,6 +14,7 @@ use crate::counter::Counter;
 use crate::helpers::env::get_float_from_env;
 use actix_cors::Cors;
 use actix_service::Service;
+use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use dotenv::dotenv;
 use futures::future;
@@ -56,12 +57,15 @@ fn main() -> std::io::Result<()> {
     .run();
 
     // Counter for requests
-    match counter::Counter::initialize_if_not_exists() {
+    match Counter::initialize_if_not_exists() {
         Ok(_) => {}
         Err(error) => {
             sentry::capture_error(&error);
         }
     };
+
+    // Logger
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     let server3 = HttpServer::new(move || {
         // Handling CORS issues
@@ -86,7 +90,6 @@ fn main() -> std::io::Result<()> {
                 match Counter::increment() {
                     Ok(new_count) => println!("New counter value (int): {}", new_count),
                     Err(error) => {
-                        println!("Error incrementing counter: {}", error);
                         sentry::capture_error(&error);
                     }
                 }
@@ -99,6 +102,7 @@ fn main() -> std::io::Result<()> {
             })
             .configure(views::views_factory)
             .wrap(cors)
+            .wrap(Logger::new("%a %{User-Agent}i %r %s %D"))
     })
     .bind("127.0.0.1:9095")?
     .workers(3) // If not set -> using the amount of threads

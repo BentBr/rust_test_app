@@ -51,7 +51,7 @@ impl JwToken {
         match token_result {
             Ok(data) => Some(data.claims),
             Err(error) => {
-                println!("Error during decoding: {}", error);
+                sentry::capture_error(&error);
 
                 None
             }

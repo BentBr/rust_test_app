@@ -46,9 +46,6 @@ pub fn create_item(title: String, description: String, user_uuid: Uuid, mut db: 
             let uuid = Uuid::new_v4();
             let new_item = NewTask::new(uuid, title, description, user_id);
 
-            // Verbosity for console
-            println!("Created new task: {}", &new_item);
-
             let exec = diesel::insert_into(to_do::table)
                 .values(&new_item)
                 .execute(&mut db.connection);

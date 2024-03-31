@@ -23,19 +23,14 @@ pub struct Task {
 
 pub fn fetch_item(uuid: Uuid, user_uuid: Uuid, mut db: DB) -> Vec<Task> {
     // Loading it from DB
-    let task = to_do::table
+    to_do::table
         .inner_join(users::table.on(users::id.eq(to_do::user_id)))
         .filter(users::uuid.eq(user_uuid))
         .select(to_do::all_columns)
         .filter(to_do::columns::uuid.eq(uuid))
         .order(to_do::columns::id.asc())
         .load::<Task>(&mut db.connection)
-        .unwrap();
-
-    // Verbosity for console
-    println!("Fetched task '{}'", uuid);
-
-    task
+        .unwrap()
 }
 
 pub fn delete_item(uuid: Uuid, user_uuid: Uuid, mut db: DB) -> Option<Uuid> {
@@ -47,11 +42,9 @@ pub fn delete_item(uuid: Uuid, user_uuid: Uuid, mut db: DB) -> Option<Uuid> {
                 Ok(exec) => {
                     // Verbosity for console
                     if exec > 0 {
-                        println!("Deleted task '{}'", uuid);
                         return Some(uuid);
                     }
 
-                    println!("Task not found for deletion '{}'", uuid);
                     None
                 }
                 Err(error) => {
@@ -74,12 +67,6 @@ pub fn edit_item(
     status: TaskStatus,
     mut db: DB,
 ) -> Vec<Task> {
-    // Verbosity for console
-    println!(
-        "Updating task '{}' with data: {}, {}, {}",
-        uuid, title, description, status
-    );
-
     match id_for_todo(uuid, user_uuid, &mut db) {
         Ok(task_id) => {
             let exec = diesel::update(to_do::table.filter(to_do::id.eq(task_id)))
@@ -91,10 +78,7 @@ pub fn edit_item(
                 .execute(&mut db.connection);
 
             match exec {
-                Ok(_) => {
-                    println!("Task updated successfully");
-                    fetch_item(uuid, user_uuid, db)
-                }
+                Ok(_) => fetch_item(uuid, user_uuid, db),
                 Err(error) => {
                     sentry::capture_error(&error);
 
@@ -122,9 +106,6 @@ pub fn open_item(uuid: Uuid, user_uuid: Uuid, db: DB) -> Vec<Task> {
 }
 
 fn transition(uuid: Uuid, user_uuid: Uuid, status: TaskStatus, mut db: DB) -> Vec<Task> {
-    // Verbosity for console
-    println!("Transitioning task '{}' to '{}'", uuid, status);
-
     let results = to_do::table.filter(to_do::columns::uuid.eq(&uuid));
     let exec = diesel::update(results)
         .set(to_do::columns::status.eq(status))

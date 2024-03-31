@@ -40,9 +40,6 @@ pub fn create_item(username: String, email: String, password: String, mut db: DB
     let uuid = Uuid::new_v4();
     let new_item = NewUser::new(uuid, username, email, password);
 
-    // Verbosity for console
-    println!("Created new user: {}", &new_item);
-
     let exec = diesel::insert_into(users::table)
         .values(&new_item)
         .execute(&mut db.connection);

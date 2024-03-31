@@ -37,16 +37,11 @@ impl User {
 
 pub fn fetch_item(uuid: Uuid, mut db: DB) -> Vec<User> {
     // Loading it from DB
-    let user = users::table
+    users::table
         .filter(users::columns::uuid.eq(uuid))
         .order(users::columns::id.asc())
         .load::<User>(&mut db.connection)
-        .unwrap();
-
-    // Verbosity for console
-    println!("Fetched user '{}'", uuid);
-
-    user
+        .unwrap()
 }
 
 pub fn delete_item(uuid: Uuid, mut db: DB) -> Option<Uuid> {
@@ -56,11 +51,9 @@ pub fn delete_item(uuid: Uuid, mut db: DB) -> Option<Uuid> {
         Ok(exec) => {
             // Verbosity for console
             if exec > 0 {
-                println!("Deleted user '{}'", uuid);
                 return Some(uuid);
             }
 
-            println!("User not found for deletion '{}'", uuid);
             None
         }
         Err(error) => {
@@ -81,12 +74,6 @@ pub fn edit_item(
     last_name: String,
     mut db: DB,
 ) -> Vec<User> {
-    // Verbosity for console
-    println!(
-        "Updating user '{}' with data: {}, {}",
-        uuid, username, email
-    );
-
     let results = users::table.filter(users::columns::uuid.eq(&uuid));
     let exec = diesel::update(results)
         .set((
@@ -112,18 +99,11 @@ pub fn update_password(
     db: DB,
     mut db2: DB,
 ) -> Option<User> {
-    // Verbosity for console
-    println!("Updating password for user '{}'", uuid);
-
     // Fetch the user to verify existence
     let user = fetch_item(uuid, db);
     if let Some(user) = user.first() {
         // Check if old password fits
         if !user.verify(old_password) {
-            println!(
-                "Failed updating password for user '{}' (wrong password)",
-                uuid
-            );
             return None;
         }
 
@@ -170,8 +150,6 @@ pub fn fetch_user_by_login(email: String, password: String, mut db: DB) -> Optio
                 None => None,
                 Some(user) => {
                     if user.verify(password) {
-                        println!("Authenticated user '{}'", user.email);
-
                         return Some(user.clone());
                     }
 

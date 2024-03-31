@@ -8,7 +8,6 @@ use crate::jwt::JwToken;
 use crate::models::task::item::edit_item;
 use crate::models::task_status::item::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
-use serde_json::json;
 use uuid::Uuid;
 
 pub async fn edit(
@@ -46,18 +45,10 @@ pub async fn edit(
             "Updated task".to_string(),
             ToDoItem::new(item.clone()),
         )),
-        None => {
-            // Logging a bit
-            println!(
-                "Editing and lookup of changed task failed {}!",
-                json!(to_do_item)
-            );
-
-            HttpResponse::NotFound().json(ResponseItem::new(
-                ResponseStatus::Error,
-                "Task not found for".to_string(),
-                to_do_item,
-            ))
-        }
+        None => HttpResponse::NotFound().json(ResponseItem::new(
+            ResponseStatus::Error,
+            "Task not found for".to_string(),
+            to_do_item,
+        )),
     }
 }
