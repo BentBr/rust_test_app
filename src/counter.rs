@@ -23,7 +23,7 @@ impl Counter {
         };
 
         match redis::cmd("SET")
-            .arg("COUNTER")
+            .arg("COUNTER_JSON")
             .arg(serialized)
             .query::<Vec<u8>>(&mut connection)
         {
@@ -41,7 +41,7 @@ impl Counter {
             Ok(con) => con,
             Err(error) => return Err(error),
         };
-        let byte_data: Vec<u8> = match redis::cmd("GET").arg("COUNTER").query(&mut con) {
+        let byte_data: Vec<u8> = match redis::cmd("GET").arg("COUNTER_JSON").query(&mut con) {
             Ok(data) => data,
             Err(error) => return Err(error),
         };
@@ -53,7 +53,9 @@ impl Counter {
         let client = redis::Client::open(Counter::get_redis_url())?;
         let mut connection = client.get_connection()?;
 
-        let exists: bool = redis::cmd("EXISTS").arg("COUNTER").query(&mut connection)?;
+        let exists: bool = redis::cmd("EXISTS")
+            .arg("COUNTER_JSON")
+            .query(&mut connection)?;
         if !exists {
             let initial_counter = Counter { count: 0 };
             initial_counter.save()?;
@@ -61,6 +63,14 @@ impl Counter {
         } else {
             Counter::load()
         }
+    }
+
+    pub fn increment() -> Result<i64, redis::RedisError> {
+        let client = redis::Client::open(Counter::get_redis_url())?;
+        let mut connection = client.get_connection()?;
+
+        let new_count: i64 = redis::cmd("INCR").arg("COUNTER").query(&mut connection)?;
+        Ok(new_count)
     }
 }
 

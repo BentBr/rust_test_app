@@ -10,6 +10,7 @@ mod views;
 #[macro_use]
 extern crate diesel;
 
+use crate::counter::Counter;
 use crate::helpers::env::get_float_from_env;
 use actix_cors::Cors;
 use actix_service::Service;
@@ -74,13 +75,21 @@ fn main() -> std::io::Result<()> {
             .wrap_fn(|req, srv| {
                 let mut site_counter = counter::Counter::load().unwrap();
                 site_counter.count += 1;
-                println!("Http requests counting: {}", &site_counter);
+                println!("Http requests counting(json): {}", &site_counter);
                 match site_counter.save() {
                     Ok(_) => {}
                     Err(error) => {
                         sentry::capture_error(&error);
                     }
                 };
+                // Implementation valid for async usages across different server instances
+                match Counter::increment() {
+                    Ok(new_count) => println!("New counter value (int): {}", new_count),
+                    Err(error) => {
+                        println!("Error incrementing counter: {}", error);
+                        sentry::capture_error(&error);
+                    }
+                }
 
                 let future = srv.call(req);
                 async {
