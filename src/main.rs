@@ -29,14 +29,8 @@ fn main() -> std::io::Result<()> {
     dotenv().ok();
 
     // Sentry init
-    let sentry_dsn: String = dotenv::var("SENTRY_DSN").unwrap();
-    let _guard = sentry::init((
-        sentry_dsn.as_str(),
-        sentry::ClientOptions {
-            release: sentry::release_name!(),
-            ..Default::default()
-        },
-    ));
+    create_sentry();
+
     std::env::set_var("RUST_BACKTRACE", "1");
 
     // Running 3 Servers in parallel
@@ -84,4 +78,31 @@ fn main() -> std::io::Result<()> {
     actix_web::rt::System::new()
         .block_on(async { future::try_join3(server1, server2, server3).await })?;
     Ok(())
+}
+
+fn create_sentry() {
+    let sentry_dsn: String = dotenv::var("SENTRY_DSN").unwrap();
+
+    let sample_rate = std::env::var("SENTRY_SAMPLE_RATE")
+        .expect("SENTRY_SAMPLE_RATE must be set in environment as unsigned int")
+        .to_string();
+    let float = sample_rate.clone().parse::<f32>();
+
+    let valid_sentry_rate: f32 = match float {
+        Err(error) => panic!(
+            "Cannot parse SENTRY_SAMPLE_RATE environment var to float! {}",
+            error
+        ),
+        Ok(float) => float,
+    };
+
+    let _guard = sentry::init((
+        sentry_dsn.as_str(),
+        sentry::ClientOptions {
+            release: sentry::release_name!(),
+            // Placeholder for now - not yet enabled
+            traces_sample_rate: valid_sentry_rate,
+            ..Default::default()
+        },
+    ));
 }
