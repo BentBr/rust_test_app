@@ -11,13 +11,68 @@
 			"item": [
 				{
 					"name": "auth",
-					"item": []
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"bent@mail.de\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{auth-api}}/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{auth-api}}",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/{{auth-api}}/logout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{auth-api}}",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "get users",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{host}}/{{user-api}}/get",
 							"host": [
@@ -35,16 +90,22 @@
 					"name": "get one user",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{host}}/{{user-api}}/get/b860706a-3739-4f2d-9fe1-aeb2445d50d0",
+							"raw": "{{host}}/{{user-api}}/get/1cd64ce3-f32b-4195-87be-486c7586eabc",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"{{user-api}}",
 								"get",
-								"b860706a-3739-4f2d-9fe1-aeb2445d50d0"
+								"1cd64ce3-f32b-4195-87be-486c7586eabc"
 							]
 						}
 					},
@@ -54,7 +115,13 @@
 					"name": "delete user",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{host}}/{{user-api}}/delete/1db23eeb-7492-4f3e-b03e-791716f19fdc",
 							"host": [
@@ -73,7 +140,13 @@
 					"name": "edit user",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"uuid\": \"b860706a-3739-4f2d-9fe1-aeb2445d50d0\",\n    \"username\": \"tesi\",\n    \"salutation\": \"MRRRR\",\n    \"first_name\": \"\",\n    \"last_name\": \"\",\n    \"email\": \"placeholder email\"\n}",
@@ -101,7 +174,13 @@
 					"name": "update user password",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"uuid\": \"b860706a-3739-4f2d-9fe1-aeb2445d50d0\",\n    \"old_password\": \"uiaeaaa\",\n    \"new_password\": \"uiael\"\n}",
@@ -132,7 +211,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"tesi\",\n    \"email\": \"test@mail.de\",\n    \"password\": \"my pass\"\n}",
+							"raw": "{\n    \"username\": \"tesi\",\n    \"email\": \"bent@mail.de\",\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,7 +243,13 @@
 							"name": "in-progress",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{host}}/{{task-api}}/transition/72655de0-21e6-40f0-9856-9530344bf78d/in-progress",
 									"host": [
@@ -184,7 +269,13 @@
 							"name": "done",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{host}}/{{task-api}}/transition/72655de0-21e6-40f0-9856-9530344bf78d/done",
 									"host": [
@@ -204,7 +295,13 @@
 							"name": "open",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "token",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{host}}/{{task-api}}/transition/72655de0-21e6-40f0-9856-9530344bf78d/open",
 									"host": [
@@ -226,7 +323,18 @@
 					"name": "create todo",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"title\": \"newt title\",\n    \"description\": \"-\",\n    \"user_id\": 1\n}",
@@ -253,10 +361,21 @@
 					"name": "edit todo",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"uuid\": \"19b43547-121c-44b8-ae83-18d9ded35fa3\",\n    \"title\": \"another test - updated\",\n    \"description\": \"hey how!!\\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum\",\n    \"status\": \"Open\"\n}",
+							"raw": "{\n \"uuid\": \"85979ec6-66c5-4ba4-9153-606f2e9e2f6a\",\n        \"title\": \"newt title xx\",\n        \"description\": \"-\",\n        \"status\": \"Open\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -264,14 +383,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/{{task-api}}/edit/19b43547-121c-44b8-ae83-18d9dec35fa3",
+							"raw": "{{host}}/{{task-api}}/edit/85979ec6-66c5-4ba4-9153-606f2e9e2f6a",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"{{task-api}}",
 								"edit",
-								"19b43547-121c-44b8-ae83-18d9dec35fa3"
+								"85979ec6-66c5-4ba4-9153-606f2e9e2f6a"
 							]
 						}
 					},
@@ -283,8 +402,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json",
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
 								"type": "text"
 							}
 						],
@@ -306,7 +425,13 @@
 					"name": "get todos",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{host}}/{{task-api}}/get",
 							"host": [
@@ -326,8 +451,8 @@
 						"method": "DELETE",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json",
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3V1aWQiOiIxM2M2MzBjNi03YWJhLTQ5M2YtYjIyYi01MDc3YmZjNDIzOWYiLCJtaW50ZWQiOjE3MTE4OTY2NDYsImV4cCI6MTcxMTk4MzA0Nn0.drgHt3QnyrSayiN4yTZqgrcjkVxtQgAx4TR_WxsNHgI",
 								"type": "text"
 							}
 						],
@@ -344,6 +469,31 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
