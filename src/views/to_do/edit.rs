@@ -8,7 +8,7 @@ use crate::jwt::JwToken;
 use crate::models::task::item::edit_item;
 use crate::models::task_status::item::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
-use sentry::Level;
+use serde_json::json;
 use uuid::Uuid;
 
 pub async fn edit(
@@ -48,7 +48,10 @@ pub async fn edit(
         )),
         None => {
             // Logging a bit
-            sentry::capture_message("Editing and lookup of changed task failed!", Level::Error);
+            println!(
+                "Editing and lookup of changed task failed {}!",
+                json!(to_do_item)
+            );
 
             HttpResponse::NotFound().json(ResponseItem::new(
                 ResponseStatus::Error,
