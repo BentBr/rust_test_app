@@ -8,13 +8,16 @@ use crate::models::task::new_item::create_item;
 use actix_web::{web, HttpResponse};
 use sentry::Level;
 
-pub async fn create(new_to_do_item: web::Json<NewToDoItem>, db: DB, _: JwToken) -> HttpResponse {
+pub async fn create(
+    new_to_do_item: web::Json<NewToDoItem>,
+    db: DB,
+    token: JwToken,
+) -> HttpResponse {
     let title = String::from(&new_to_do_item.title);
     let description = String::from(&new_to_do_item.description);
-    let user_id = new_to_do_item.user_id;
 
     // Creating in DB
-    let item = create_item(title, description, user_id, db);
+    let item = create_item(title, description, token.user_uuid, db);
 
     match item.first() {
         Some(item) => HttpResponse::Created().json(ResponseItem::new(

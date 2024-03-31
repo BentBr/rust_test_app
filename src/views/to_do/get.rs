@@ -6,9 +6,9 @@ use crate::jwt::JwToken;
 use crate::models::task::items::fetch_items;
 use actix_web::HttpResponse;
 
-pub async fn get(db: DB, _: JwToken) -> HttpResponse {
+pub async fn get(db: DB, token: JwToken) -> HttpResponse {
     // Loading them with default limit: 100
-    let items = fetch_items(None, db);
+    let items = fetch_items(None, token.user_uuid, db);
 
     HttpResponse::Ok().json(ResponseItem::new(
         ResponseStatus::Success,

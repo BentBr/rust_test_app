@@ -15,7 +15,7 @@ pub async fn edit(
     to_do_item: web::Json<EditToDoItem>,
     request: HttpRequest,
     db: DB,
-    _: JwToken,
+    token: JwToken,
 ) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
@@ -38,7 +38,7 @@ pub async fn edit(
     };
 
     // Editing in DB
-    let item = edit_item(uuid, title, description, valid_status, db);
+    let item = edit_item(uuid, token.user_uuid, title, description, valid_status, db);
 
     match item.first() {
         Some(item) => HttpResponse::Ok().json(ResponseItem::new(
