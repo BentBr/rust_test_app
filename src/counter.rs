@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 use std::{env, fmt};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 pub struct Counter {
-    pub count: i32,
+    pub count: i64,
 }
 
 impl Counter {
@@ -47,6 +47,20 @@ impl Counter {
         };
 
         Ok(serde_json::from_slice(&byte_data).unwrap())
+    }
+
+    pub fn initialize_if_not_exists() -> Result<Counter, redis::RedisError> {
+        let client = redis::Client::open(Counter::get_redis_url())?;
+        let mut connection = client.get_connection()?;
+
+        let exists: bool = redis::cmd("EXISTS").arg("COUNTER").query(&mut connection)?;
+        if !exists {
+            let initial_counter = Counter { count: 0 };
+            initial_counter.save()?;
+            Ok(initial_counter)
+        } else {
+            Counter::load()
+        }
     }
 }
 

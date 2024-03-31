@@ -55,8 +55,7 @@ fn main() -> std::io::Result<()> {
     .run();
 
     // Counter for requests
-    let site_counter = counter::Counter { count: 0 };
-    match site_counter.save() {
+    match counter::Counter::initialize_if_not_exists() {
         Ok(_) => {}
         Err(error) => {
             sentry::capture_error(&error);
