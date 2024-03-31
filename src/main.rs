@@ -8,7 +8,6 @@ mod views;
 
 #[macro_use]
 extern crate diesel;
-extern crate dotenv;
 use actix_cors::Cors;
 use actix_service::Service;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
@@ -25,7 +24,7 @@ async fn two() -> impl Responder {
 }
 
 fn main() -> std::io::Result<()> {
-    // Initial loading of the dotenv file
+    #[cfg(debug_assertions)]
     dotenv().ok();
 
     // Sentry init
@@ -81,7 +80,7 @@ fn main() -> std::io::Result<()> {
 }
 
 fn create_sentry() {
-    let sentry_dsn: String = dotenv::var("SENTRY_DSN").unwrap();
+    let sentry_dsn: String = std::env::var("SENTRY_DSN").unwrap();
 
     let sample_rate = std::env::var("SENTRY_SAMPLE_RATE")
         .expect("SENTRY_SAMPLE_RATE must be set in environment as unsigned int")
