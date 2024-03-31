@@ -3,12 +3,12 @@ use crate::json_serialization::response::response_status::ResponseStatus;
 use actix_web::dev::Payload;
 use actix_web::{FromRequest, HttpRequest, HttpResponse, ResponseError};
 use chrono::serde::ts_seconds;
-use chrono::{DateTime, Utc};
-use dotenv::dotenv;
+use chrono::{DateTime, Duration, TimeDelta, Utc};
 use futures::future::{err, ok, Ready};
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
+use std::ops::Add;
 use std::{env, fmt};
 use uuid::Uuid;
 
@@ -17,27 +17,29 @@ pub struct JwToken {
     pub user_uuid: Uuid,
     #[serde(with = "ts_seconds")]
     pub minted: DateTime<Utc>,
+    #[serde(with = "ts_seconds")]
+    pub exp: DateTime<Utc>,
 }
 
 impl JwToken {
     pub fn get_key() -> String {
-        dotenv().ok();
-
         env::var("APP_SECRET").expect("APP_SECRET must be set in environment")
     }
 
     pub fn encode(self) -> String {
         let key = EncodingKey::from_secret(JwToken::get_key().as_ref());
 
-        encode(&Header::default(), &self, &key).unwrap()
+        encode(&Header::default(), &self, &key).expect("Token encoding failed")
     }
 
     pub fn new(user_uuid: Uuid) -> Self {
         let timestamp = Utc::now();
+        let expiration_timestamp = Utc::now().add(get_session_lifetime());
 
         JwToken {
             user_uuid,
             minted: timestamp,
+            exp: expiration_timestamp,
         }
     }
 
@@ -47,7 +49,11 @@ impl JwToken {
 
         match token_result {
             Ok(data) => Some(data.claims),
-            Err(_) => None,
+            Err(error) => {
+                println!("Error during decoding: {}", error);
+
+                None
+            }
         }
     }
 }
@@ -101,4 +107,19 @@ impl ResponseError for UnauthorizedError {
             &self.message,
         ))
     }
+}
+
+fn get_session_lifetime() -> TimeDelta {
+    let session_lifetime = env::var("SESSION_LIFETIME")
+        .expect("SESSION_LIFETIME must be set in environment")
+        .to_string();
+    let lifetime_in_seconds = match session_lifetime.clone().parse::<i64>() {
+        Ok(time) => time,
+        Err(error) => {
+            panic!("Lifetime parsing failed! {}", error);
+        }
+    };
+
+    Duration::try_seconds(lifetime_in_seconds)
+        .expect("Duration calculation failed for token expiring")
 }

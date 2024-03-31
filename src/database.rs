@@ -5,7 +5,6 @@ use diesel::{
     pg::PgConnection,
     r2d2::{ConnectionManager, Pool, PooledConnection},
 };
-use dotenv::dotenv;
 use futures::future::{err, ok, Ready};
 use lazy_static::lazy_static;
 use std::env;
@@ -17,7 +16,6 @@ pub struct DbConnection {
 
 lazy_static! {
     pub static ref DBCONNECTION: DbConnection = {
-        dotenv().ok();
         let database_url =
             env::var("DATABASE_URL").expect("DATABASE_URL must be set in environment");
         let max_database_connections = env::var("MAX_DATABASE_CONNECTIONS")

@@ -12,6 +12,7 @@ extern crate dotenv;
 use actix_cors::Cors;
 use actix_service::Service;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use dotenv::dotenv;
 use futures::future;
 
 async fn greet(req: HttpRequest) -> impl Responder {
@@ -24,6 +25,9 @@ async fn two() -> impl Responder {
 }
 
 fn main() -> std::io::Result<()> {
+    // Initial loading of the dotenv file
+    dotenv().ok();
+
     // Sentry init
     let sentry_dsn: String = dotenv::var("SENTRY_DSN").unwrap();
     let _guard = sentry::init((

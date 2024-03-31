@@ -3,9 +3,12 @@ use crate::models::task::item::{fetch_item, Task};
 use crate::models::task_status::item::TaskStatus;
 use crate::schema::to_do;
 use diesel::RunQueryDsl;
+use serde::Serialize;
+use serde_json::json;
+use std::fmt::{Display, Formatter};
 use uuid::Uuid;
 
-#[derive(Insertable, Debug)]
+#[derive(Insertable, Debug, Serialize)]
 #[diesel(table_name = to_do)]
 pub struct NewTask {
     pub uuid: Uuid,
@@ -27,12 +30,18 @@ impl NewTask {
     }
 }
 
+impl Display for NewTask {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", json!(self))
+    }
+}
+
 pub fn create_item(title: String, description: String, user_id: i32, mut db: DB) -> Vec<Task> {
     let uuid = Uuid::new_v4();
     let new_item = NewTask::new(uuid, title, description, user_id);
 
     // Verbosity for console
-    println!("Created new task: {:?}", &new_item);
+    println!("Created new task: {}", &new_item);
 
     let exec = diesel::insert_into(to_do::table)
         .values(&new_item)

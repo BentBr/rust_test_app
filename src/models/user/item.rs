@@ -154,3 +154,35 @@ pub fn update_password(
         None
     }
 }
+
+pub fn fetch_user_by_login(email: String, password: String, mut db: DB) -> Option<User> {
+    let users = users::table
+        .filter(users::columns::email.eq(email))
+        .load::<User>(&mut db.connection);
+
+    match users {
+        Ok(users) => {
+            if users.len() != 1 {
+                return None;
+            }
+
+            match users.first() {
+                None => None,
+                Some(user) => {
+                    if user.verify(password) {
+                        println!("Authenticated user '{}'", user.email);
+
+                        return Some(user.clone());
+                    }
+
+                    None
+                }
+            }
+        }
+        Err(error) => {
+            sentry::capture_error(&error);
+
+            None
+        }
+    }
+}

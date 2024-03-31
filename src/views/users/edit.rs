@@ -6,17 +6,17 @@ use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::json_serialization::user::edit_user_item::EditUserItem;
 use crate::json_serialization::user::password_user_item::PasswordUserItem;
 use crate::json_serialization::user::user_item::UserItem;
+use crate::jwt::JwToken;
 use crate::models::user::item::{edit_item, update_password};
 use actix_web::{web, HttpRequest, HttpResponse};
 use sentry::Level;
 use uuid::Uuid;
-use crate::jwt::JwToken;
 
 pub async fn edit(
     user_item: web::Json<EditUserItem>,
     request: HttpRequest,
     db: DB,
-    _: JwToken
+    _: JwToken,
 ) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
@@ -69,7 +69,7 @@ pub async fn password(
     request: HttpRequest,
     db: DB,
     db2: DB,
-    _: JwToken
+    _: JwToken,
 ) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
