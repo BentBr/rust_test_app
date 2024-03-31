@@ -4,6 +4,7 @@ use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::json_serialization::task::edit_to_do_item::EditToDoItem;
 use crate::json_serialization::task::to_do_item::ToDoItem;
+use crate::jwt::JwToken;
 use crate::models::task::item::edit_item;
 use crate::models::task_status::item::TaskStatus;
 use actix_web::{web, HttpRequest, HttpResponse};
@@ -14,6 +15,7 @@ pub async fn edit(
     to_do_item: web::Json<EditToDoItem>,
     request: HttpRequest,
     db: DB,
+    _: JwToken,
 ) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,

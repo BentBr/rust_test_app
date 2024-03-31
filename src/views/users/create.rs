@@ -7,8 +7,9 @@ use crate::json_serialization::user::user_item::UserItem;
 use crate::models::user::new_item::create_item;
 use actix_web::{web, HttpResponse};
 use sentry::Level;
+use crate::jwt::JwToken;
 
-pub async fn create(new_user_item: web::Json<NewUserItem>, db: DB) -> HttpResponse {
+pub async fn create(new_user_item: web::Json<NewUserItem>, db: DB, _: JwToken) -> HttpResponse {
     let username = String::from(&new_user_item.username);
     let email = String::from(&new_user_item.email);
     let password = String::from(&new_user_item.password);

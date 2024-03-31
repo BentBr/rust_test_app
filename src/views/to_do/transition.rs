@@ -7,18 +7,19 @@ use uuid::Uuid;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::json_serialization::task::to_do_item::ToDoItem;
+use crate::jwt::JwToken;
 use crate::models::task::item::{done_item, in_progress_item, open_item};
 use crate::models::task_status::item::TaskStatus;
 
-pub async fn open(request: HttpRequest, db: DB) -> HttpResponse {
+pub async fn open(request: HttpRequest, db: DB, _: JwToken) -> HttpResponse {
     transition_into(request, TaskStatus::Open, db)
 }
 
-pub async fn in_progress(request: HttpRequest, db: DB) -> HttpResponse {
+pub async fn in_progress(request: HttpRequest, db: DB, _: JwToken) -> HttpResponse {
     transition_into(request, TaskStatus::InProgress, db)
 }
 
-pub async fn done(request: HttpRequest, db: DB) -> HttpResponse {
+pub async fn done(request: HttpRequest, db: DB, _: JwToken) -> HttpResponse {
     transition_into(request, TaskStatus::Done, db)
 }
 

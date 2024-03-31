@@ -10,11 +10,13 @@ use crate::models::user::item::{edit_item, update_password};
 use actix_web::{web, HttpRequest, HttpResponse};
 use sentry::Level;
 use uuid::Uuid;
+use crate::jwt::JwToken;
 
 pub async fn edit(
     user_item: web::Json<EditUserItem>,
     request: HttpRequest,
     db: DB,
+    _: JwToken
 ) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
@@ -67,6 +69,7 @@ pub async fn password(
     request: HttpRequest,
     db: DB,
     db2: DB,
+    _: JwToken
 ) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,

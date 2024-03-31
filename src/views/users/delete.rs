@@ -5,8 +5,9 @@ use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::models::user::item::delete_item;
 use actix_web::{HttpRequest, HttpResponse};
 use uuid::Uuid;
+use crate::jwt::JwToken;
 
-pub async fn delete(request: HttpRequest, db: DB) -> HttpResponse {
+pub async fn delete(request: HttpRequest, db: DB, _: JwToken) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
         Ok(valid_uuid) => valid_uuid,

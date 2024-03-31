@@ -3,11 +3,12 @@ use crate::helpers::uuid::parse_uuid_from_request;
 use crate::json_serialization::response::response_item::ResponseItem;
 use crate::json_serialization::response::response_status::ResponseStatus;
 use crate::json_serialization::task::to_do_item::ToDoItem;
+use crate::jwt::JwToken;
 use crate::models::task::item::fetch_item;
 use actix_web::{HttpRequest, HttpResponse};
 use uuid::Uuid;
 
-pub async fn get_one(request: HttpRequest, db: DB) -> HttpResponse {
+pub async fn get_one(request: HttpRequest, db: DB, _: JwToken) -> HttpResponse {
     let uuid: Uuid = match parse_uuid_from_request(request) {
         Err(response) => return response,
         Ok(valid_uuid) => valid_uuid,
