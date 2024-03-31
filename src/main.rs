@@ -9,12 +9,14 @@ mod views;
 
 #[macro_use]
 extern crate diesel;
+
 use crate::helpers::env::get_float_from_env;
 use actix_cors::Cors;
 use actix_service::Service;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
 use dotenv::dotenv;
 use futures::future;
+use std::env;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -32,7 +34,7 @@ fn main() -> std::io::Result<()> {
     // Sentry init
     create_sentry();
 
-    std::env::set_var("RUST_BACKTRACE", "1");
+    env::set_var("RUST_BACKTRACE", "1");
 
     // Running 3 Servers in parallel
     let server1 = HttpServer::new(move || {
@@ -52,6 +54,15 @@ fn main() -> std::io::Result<()> {
     .workers(1) // If not set -> using the amount of threads
     .run();
 
+    // Counter for requests
+    let site_counter = counter::Counter { count: 0 };
+    match site_counter.save() {
+        Ok(_) => {}
+        Err(error) => {
+            sentry::capture_error(&error);
+        }
+    };
+
     let server3 = HttpServer::new(move || {
         // Handling CORS issues
         let cors = Cors::default()
@@ -62,6 +73,16 @@ fn main() -> std::io::Result<()> {
         // Returning the app
         App::new()
             .wrap_fn(|req, srv| {
+                let mut site_counter = counter::Counter::load().unwrap();
+                site_counter.count += 1;
+                println!("Http requests counting: {}", &site_counter);
+                match site_counter.save() {
+                    Ok(_) => {}
+                    Err(error) => {
+                        sentry::capture_error(&error);
+                    }
+                };
+
                 let future = srv.call(req);
                 async {
                     let result = future.await?;
@@ -82,7 +103,7 @@ fn main() -> std::io::Result<()> {
 }
 
 fn create_sentry() {
-    let sentry_dsn: String = std::env::var("SENTRY_DSN").unwrap();
+    let sentry_dsn: String = env::var("SENTRY_DSN").unwrap();
     let sample_rate = get_float_from_env("SENTRY_SAMPLE_RATE".to_string());
 
     let _guard = sentry::init((
