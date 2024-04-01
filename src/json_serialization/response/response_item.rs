@@ -25,7 +25,7 @@ where
 }
 
 #[cfg(test)]
-mod tests {
+mod response_item_tests {
     use super::ResponseItem;
     use crate::json_serialization::response::response_status::ResponseStatus;
     use serde::Serialize;
