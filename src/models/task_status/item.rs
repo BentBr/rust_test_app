@@ -97,3 +97,47 @@ impl FromSql<Status, Pg> for TaskStatus {
         }
     }
 }
+
+#[cfg(test)]
+mod task_status_tests {
+    use super::TaskStatus;
+
+    #[test]
+    fn stringify() {
+        assert_eq!(TaskStatus::Done.stringify(), "Done");
+        assert_eq!(TaskStatus::Open.stringify(), "Open");
+        assert_eq!(TaskStatus::InProgress.stringify(), "In Progress");
+    }
+
+    #[test]
+    fn from_string() {
+        assert_eq!(
+            TaskStatus::from_string("Done".to_string()),
+            Some(TaskStatus::Done)
+        );
+        assert_eq!(
+            TaskStatus::from_string("Open".to_string()),
+            Some(TaskStatus::Open)
+        );
+        assert_eq!(
+            TaskStatus::from_string("In Progress".to_string()),
+            Some(TaskStatus::InProgress)
+        );
+        assert_eq!(TaskStatus::from_string("Invalid".to_string()), None);
+    }
+
+    #[test]
+    fn serialize() {
+        let done = TaskStatus::Done;
+        let serialized = serde_json::to_string(&done).unwrap();
+        assert_eq!(serialized, "\"Done\"");
+
+        let open = TaskStatus::Open;
+        let serialized = serde_json::to_string(&open).unwrap();
+        assert_eq!(serialized, "\"Open\"");
+
+        let in_progress = TaskStatus::InProgress;
+        let serialized = serde_json::to_string(&in_progress).unwrap();
+        assert_eq!(serialized, "\"In Progress\"");
+    }
+}
