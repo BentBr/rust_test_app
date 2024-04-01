@@ -26,9 +26,9 @@ where
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::ResponseItem;
     use crate::json_serialization::response::response_status::ResponseStatus;
-    use serde_json;
+    use serde::Serialize;
 
     #[derive(Serialize)]
     struct TestData {

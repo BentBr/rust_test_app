@@ -28,7 +28,7 @@ impl UserItems {
 }
 
 #[cfg(test)]
-mod tests {
+mod user_items_tests {
     use super::UserItems;
     use crate::helpers::datetime::format_datetime;
     use crate::models::user::item::User;

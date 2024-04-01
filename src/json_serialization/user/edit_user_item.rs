@@ -25,10 +25,9 @@ impl EditUserItem {
 }
 
 #[cfg(test)]
-mod tests {
+mod edit_user_item_tests {
     use super::EditUserItem;
     use crate::models::user::item::User;
-    use serde_json;
     use uuid::Uuid;
 
     #[test]

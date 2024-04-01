@@ -43,6 +43,7 @@ test_coverage:
 	RUSTFLAGS="-C instrument-coverage" LLVM_PROFILE_FILE="web_app-%p-%m.profraw" cargo test;
 	# Running the actual coverage report
 	grcov . --binary-path ./target/debug/ -s . -t html --branch --ignore-not-existing --excl-start "#\[cfg\(test\)\]" --excl-line "#\[derive\(" --ignore "/*" -o ./target/debug/coverage/;
+	rm web_app*.profraw;
 
 test:
 	cargo nextest run

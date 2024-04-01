@@ -19,7 +19,7 @@ impl PasswordUserItem {
 }
 
 #[cfg(test)]
-mod tests {
+mod password_user_item_tests {
     use super::PasswordUserItem;
     use crate::models::user::item::PasswordUser;
     use uuid::Uuid;

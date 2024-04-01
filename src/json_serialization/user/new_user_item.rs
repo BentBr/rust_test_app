@@ -19,10 +19,9 @@ impl NewUserItem {
 }
 
 #[cfg(test)]
-mod tests {
+mod new_user_item_tests {
     use super::NewUserItem;
     use crate::models::user::item::User;
-    use serde_json;
 
     #[test]
     fn new() {
