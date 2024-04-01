@@ -7,7 +7,6 @@ use diesel::serialize::IsNull;
 use diesel::serialize::{Output, ToSql};
 use sentry::Level;
 use serde::ser::{Serialize, Serializer};
-use std::cmp::Eq;
 use std::fmt;
 use std::io::Write;
 

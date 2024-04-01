@@ -8,3 +8,5 @@
 
 # vue app
 /node_modules
+
+web_app*

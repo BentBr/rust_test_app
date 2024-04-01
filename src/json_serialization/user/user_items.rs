@@ -1,7 +1,6 @@
 use crate::json_serialization::user::user_item::UserItem;
 use crate::models::user::item::User;
 use serde::Serialize;
-use std::vec::Vec;
 
 #[derive(Serialize)]
 pub struct UserItems {

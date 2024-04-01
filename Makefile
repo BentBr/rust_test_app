@@ -10,6 +10,8 @@ help:
 		@echo "  \033[32m migration_up \033[39m       Running diesel migrations"
 		@echo "  \033[32m migration_redo \033[39m     Running diesel migrations down + up"
 		@echo "  \033[32m readme \033[39m             Shows some help"
+		@echo "  \033[32m test \033[39m               Running all unittest via nextest"
+		@echo "  \033[32m test_coverage \033[39m      Find a coverage report in %targetdir%/debug/coverage/index.html"
 
 list:
 	$(MAKE) help
@@ -35,3 +37,12 @@ migration_redo:
 readme:
 	@echo "\033[32m cargo run\033[39m to run the (rust) server"
 	@echo "\033[32m docker-compose exec node sh\033[39m and than \033[32mnpm run dev\033[39m to start the vite web server"
+
+test_coverage:
+	RUSTFLAGS="-C instrument-coverage" LLVM_PROFILE_FILE="web_app-%p-%m.profraw" cargo clean;
+	RUSTFLAGS="-C instrument-coverage" LLVM_PROFILE_FILE="web_app-%p-%m.profraw" cargo test;
+	# Running the actual coverage report
+	grcov . --binary-path ./target/debug/ -s . -t html --branch --ignore-not-existing --excl-start "#\[cfg\(test\)\]" --excl-line "#\[derive\(" --ignore "/*" -o ./target/debug/coverage/;
+
+test:
+	cargo nextest run
