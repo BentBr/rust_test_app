@@ -8,7 +8,7 @@ pub struct Counter {
 
 impl Counter {
     fn get_redis_url() -> String {
-        env::var("REDIS_DSN").unwrap()
+        env::var("REDIS_DSN").expect("REDIS_DSN not set")
     }
 
     pub fn save(self) -> Result<(), redis::RedisError> {
