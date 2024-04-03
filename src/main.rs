@@ -16,9 +16,12 @@ use actix_cors::Cors;
 use actix_service::Service;
 use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
-use dotenv::dotenv;
 use futures::future;
 use std::env;
+
+#[cfg(debug_assertions)]
+#[allow(unused_imports)]
+use dotenv::dotenv;
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");
@@ -31,7 +34,10 @@ async fn two() -> impl Responder {
 
 fn main() -> std::io::Result<()> {
     #[cfg(debug_assertions)]
-    dotenv().ok();
+    {
+        dotenv::dotenv().ok();
+        println!("Development environment - .env file loaded");
+    }
 
     // Sentry init
     create_sentry();
@@ -115,7 +121,7 @@ fn main() -> std::io::Result<()> {
 }
 
 fn create_sentry() {
-    let sentry_dsn: String = env::var("SENTRY_DSN").unwrap();
+    let sentry_dsn: String = env::var("SENTRY_DSN").expect("SENTRY_DSN not set");
     let sample_rate = get_float_from_env("SENTRY_SAMPLE_RATE".to_string());
 
     let _guard = sentry::init((
