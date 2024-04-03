@@ -29,7 +29,7 @@ mod edit_to_do_item_tests {
     use uuid::Uuid;
 
     #[test]
-    fn test_edit_to_do_item_new_general_case() {
+    fn new() {
         let uuid = Uuid::new_v4();
 
         // General case test
@@ -54,7 +54,7 @@ mod edit_to_do_item_tests {
     }
 
     #[test]
-    fn test_edit_to_do_item_serialization() {
+    fn serialize() {
         let uuid = Uuid::new_v4();
 
         let edit_item = EditToDoItem {
@@ -75,7 +75,7 @@ mod edit_to_do_item_tests {
     }
 
     #[test]
-    fn test_edit_to_do_item_deserialization() {
+    fn deserialize() {
         let json = r#"
         {
             "uuid": "123e4567-e89b-12d3-a456-426614174000",
