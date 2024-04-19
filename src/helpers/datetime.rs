@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 
 pub fn format_datetime(dt: Option<NaiveDateTime>) -> Option<String> {
-    dt.map(|datetime| datetime.to_string())
+    dt.map(|datetime| datetime.format("%Y-%m-%d %H:%M:%S").to_string())
 }
 
 #[cfg(test)]
@@ -15,7 +15,7 @@ mod datetime_test {
 
         assert_eq!(
             format_datetime(Some(time)),
-            Some(time.format("%Y-%m-%d %H:%M:%S%.6f").to_string())
+            Some(time.format("%Y-%m-%d %H:%M:%S").to_string())
         );
         assert_eq!(format_datetime(None), None);
     }
