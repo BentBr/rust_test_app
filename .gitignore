@@ -10,3 +10,6 @@
 /node_modules
 
 web_app*
+
+# mac
+.DS_Store
